@@ -55,6 +55,7 @@ class Development(Config):
   # chat ids or usernames, it is recommended to use chat ids,
   # providing usernames means an additional overhead for the user
   CHATS_TO_MONITOR_FOR_ANTI_FLOOD = []
+  REM_BG_API_KEY = []
   # specify LOAD and NO_LOAD
   LOAD = []
   NO_LOAD = []
