@@ -35,7 +35,7 @@ async def _(event):
             reply_message,
             Config.TMP_DOWNLOAD_DIRECTORY,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, event, c_time, "trying to download")
+                progress(d, t, event, c_time, "trying to download {}.".format(downloaded_file_name))
             )
         )
         end = datetime.now()
