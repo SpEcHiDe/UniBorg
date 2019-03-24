@@ -14,11 +14,11 @@ TYPE_DOCUMENT = 2
 snips = storage.snips or {}
 
 
-@borg.on(events.NewMessage(pattern=r'\.snip (\S+)', outgoing=True))
+@borg.on(events.NewMessage(pattern=r'\.#(\S+)', outgoing=True))
 async def on_snip(event):
     name = event.pattern_match.group(1)
     if name not in snips:
-        await on_snip_save(event)
+        await event.edit("This not does not exist")
     else:
         snip = snips[name]
         if snip['type'] == TYPE_PHOTO:
@@ -36,7 +36,7 @@ async def on_snip(event):
             reply_to=message_id,
             file=media
         )
-    await event.delete()
+        await event.delete()
 
 
 @borg.on(events.NewMessage(pattern=r'\.snips (\S+)', outgoing=True))
@@ -58,11 +58,9 @@ async def on_snip_save(event):
                 snip['id'] = media.id
                 snip['hash'] = media.access_hash
                 snip['fr'] = media.file_reference
-
         snips[name] = snip
         storage.snips = snips
-
-    await event.delete()
+    await event.edit("Note {name} saved successfully. Get it with #{name}".format(name=name))
 
 
 @borg.on(events.NewMessage(pattern=r'\.snipl', outgoing=True))
@@ -72,9 +70,10 @@ async def on_snip_list(event):
 
 @borg.on(events.NewMessage(pattern=r'\.snipd (\S+)', outgoing=True))
 async def on_snip_delete(event):
-    snips.pop(event.pattern_match.group(1), None)
+    name = event.pattern_match.group(1)
+    snips.pop(name, None)
     storage.snips = snips
-    await event.delete()
+    await event.edit("Note {} deleted successfully".format(name))
 
 
 @borg.on(events.NewMessage(pattern=r'\.snipr (\S+)\s+(\S+)', outgoing=True))
@@ -83,5 +82,4 @@ async def on_snip_rename(event):
     if snip:
         snips[event.pattern_match.group(2)] = snip
         storage.snips = snips
-
     await event.delete()

@@ -26,43 +26,20 @@ async def _(event):
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
     )
     OUTPUT = f"**QUERY:**\n__Command:__\n`{cmd}` \n__PID:__\n`{process.pid}`\n\n**Output:**\n"
-    while process:
-        if time.time() > start_time:
-            if process:
-                process.kill()
-            await event.edit(f"{OUTPUT}\n__Process killed__: `Time limit reached`")
-            break
-        stdout = await process.stdout.readline()
-        if not stdout:
-            _, stderr = await process.communicate()
-            if stderr.decode():
-                OUTPUT += f"`{stderr.decode()}`"
-                await event.edit(OUTPUT)
-                await asyncio.sleep(DELAY_BETWEEN_EDITS)
-                break
-        else:
-            OUTPUT += f"`{stdout.decode()}`"
-        if len(OUTPUT) > Config.MAX_MESSAGE_SIZE_LIMIT:
-            with io.BytesIO(str.encode(OUTPUT)) as out_file:
-                out_file.name = "exec.text"
-                await borg.send_file(
-                    event.chat_id,
-                    out_file,
-                    force_document=True,
-                    allow_cache=False,
-                    caption=cmd,
-                    reply_to=reply_to_id
-                )
-                await event.delete()
-                break
-        else:
-            try:
-                await asyncio.sleep(DELAY_BETWEEN_EDITS)
-                await event.edit(OUTPUT)
-                await asyncio.sleep(DELAY_BETWEEN_EDITS)
-            except (Exception) as e:
-                logger.warn(str(e))
-                if "seconds" in str(e):
-                    break
-                else:
-                    pass
+    stdout, stderr = await process.communicate()
+    if len(stdout) > Config.MAX_MESSAGE_SIZE_LIMIT:
+        with io.BytesIO(str.encode(stdout)) as out_file:
+            out_file.name = "exec.text"
+            await borg.send_file(
+                event.chat_id,
+                out_file,
+                force_document=True,
+                allow_cache=False,
+                caption=OUTPUT,
+                reply_to=reply_to_id
+            )
+            await event.delete()
+    if stderr.decode():
+        await event.edit(f"{OUTPUT}`{stderr.decode()}`")
+        return
+    await event.edit(f"{OUTPUT}`{stdout.decode()}`")

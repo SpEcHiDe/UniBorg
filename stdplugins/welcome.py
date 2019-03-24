@@ -19,12 +19,15 @@ async def welcome(event):
         if event.user_joined:
             if event.chat_id in borg.storage.last_welcome:
                 await borg.storage.last_welcome[event.chat_id].delete()
-            user_ids = event.action_message.action.users
+            try:
+                user_ids = event.action_message.action.users
+            except AttributeError as e:
+                user_ids = [event.action_message.from_id]
             for user_id in user_ids:
                 current_saved_welcome_message = borg.storage.WELCOME[event.chat_id]
-                mention = "[mention](tg://user?id={})".format(user_id)
-                current_saved_welcome_message.format(mention=mention)
-                borg.storage.last_welcome[event.chat_id] = await event.reply(current_saved_welcome_message)
+                user_obj = await borg.get_entity(user_id)
+                mention = "[{}](tg://user?id={})".format(user_obj.first_name, user_id)
+                borg.storage.last_welcome[event.chat_id] = await event.reply(current_saved_welcome_message.format(mention=mention))
                 try:
                     await event.delete()
                 except Exception as e:
