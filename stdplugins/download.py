@@ -23,7 +23,7 @@ from uniborg.util import progress, humanbytes, TimeFormatter
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Processing ...")
+    await event.edit("Processing 🙇🏼‍♂️...")
     input_str = event.pattern_match.group(1)
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
@@ -35,12 +35,12 @@ async def _(event):
             reply_message,
             Config.TMP_DOWNLOAD_DIRECTORY,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, event, c_time, "trying to download {}.".format(downloaded_file_name))
+                progress(d, t, event, c_time, "trying to download 🧐")
             )
         )
         end = datetime.now()
         ms = (end - start).seconds
-        await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
+        await event.edit("Downloaded to `{}` in {} seconds😃✅.".format(downloaded_file_name, ms))
     elif input_str:
         start = datetime.now()
         url = input_str
@@ -63,11 +63,11 @@ async def _(event):
         end = datetime.now()
         ms = (end - start).seconds
         if os.path.exists(downloaded_file_name):
-            await event.edit("Downloaded to `{}` in {} seconds.".format(downloaded_file_name, ms))
+            await event.edit("Downloaded to `{}` in {} seconds😃✅.".format(downloaded_file_name, ms))
         else:
-            await event.edit("Incorrect URL\n {}".format(input_str))
+            await event.edit("⛔️😬Incorrect URL\n {}".format(input_str))
     else:
-        await event.edit("Reply to a message to download to my local server.")
+        await event.edit("‼️Reply to a message to download to my local server😅.")
 
 
 async def download_coroutine(session, url, file_name, event, start):
@@ -79,7 +79,7 @@ async def download_coroutine(session, url, file_name, event, start):
         content_type = response.headers["Content-Type"]
         if "text" in content_type and total_length < 500:
             return await response.release()
-        await event.edit("""Initiating Download
+        await event.edit("""🙇🏻‍♂️Initiating Download
 URL: {}
 File Name: {}
 File Size: {}""".format(url, file_name, humanbytes(total_length)))
@@ -100,7 +100,7 @@ File Size: {}""".format(url, file_name, humanbytes(total_length)))
                         (total_length - downloaded) / speed) * 1000
                     estimated_total_time = elapsed_time + time_to_completion
                     try:
-                        current_message = """**Download Status**
+                        current_message = """🛑**Download Status**🛑
 URL: {}
 File Name: {}
 File Size: {}
