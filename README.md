@@ -26,7 +26,7 @@ An example `config.py` file could be:
 
 **Not All of the variables are mandatory**
 
-__The UniBorg should work by setting only the first three variables__
+__The UniBorg should work by setting only the first two variables__
 
 ```python3
 from sample_config import Config
@@ -34,20 +34,6 @@ from sample_config import Config
 class Development(Config):
   APP_ID = 6
   API_HASH = "eb06d4abfb49dc3eeb1aeb98ae0f581e"
-  OPEN_WEATHER_MAP_APPID = ""
-  SCREEN_SHOT_LAYER_ACCESS_KEY = ""
-  # Send .get_id in any private group to fill this value.
-  PRIVATE_GROUP_BOT_API_ID = -100
-  # Send .get_id in any broadcast channel to fill this value.
-  PRIVATE_CHANNEL_BOT_API_ID = -100
-  TMP_DOWNLOAD_DIRECTORY = "./DOWNLOADS/"
-  IBM_WATSON_CRED_USERNAME = ""
-  IBM_WATSON_CRED_PASSWORD = ""
-  HASH_TO_TORRENT_API = None
-  TELEGRAPH_SHORT_NAME = "UniBorg"
-  OCR_SPACE_API_KEY = ""
-  G_BAN_LOGGER_GROUP = -100
-  TG_GLOBAL_ALBUM_LIMIT = 3
   TG_BOT_TOKEN_BF_HER = ""
   TG_BOT_USER_NAME_BF_HER = ""
   UB_BLACK_LIST_CHAT = []
@@ -63,4 +49,4 @@ class Development(Config):
 
 The core features offered by the custom `TelegramClient` live under the
 [`uniborg/`](https://github.com/SpEcHiDe/uniborg/tree/master/uniborg)
-directory, with some utilities, enhancements and the `_core` plugin.
+directory, with some utilities, enhancements, the `_core` plugin, and the `_inline_bot` plugin.

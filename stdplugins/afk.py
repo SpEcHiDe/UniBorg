@@ -4,18 +4,41 @@ import asyncio
 import datetime
 from telethon import events
 from telethon.tl import functions, types
+from telethon.utils import resolve_id
 
 
 borg.storage.USER_AFK = {}  # pylint:disable=E0602
 borg.storage.afk_time = None  # pylint:disable=E0602
 borg.storage.last_afk_message = {}  # pylint:disable=E0602
+borg.storage.recvd_messages = {}  # pylint:disable=E0602
 
 
 @borg.on(events.NewMessage(outgoing=True))  # pylint:disable=E0602
 async def set_not_afk(event):
     current_message = event.message.message
     if ".afk" not in current_message and "yes" in borg.storage.USER_AFK:  # pylint:disable=E0602
+        borg.storage.USER_AFK = {}  # pylint:disable=E0602
+        borg.storage.afk_time = None  # pylint:disable=E0602
+        # pylint:disable=E0602
+        for chat_id in borg.storage.last_afk_message:
+            await borg.storage.last_afk_message[chat_id].delete()
+        borg.storage.last_afk_message = {}  # pylint:disable=E0602
+        recvd_messages = "You received the following messages: \n"
+        # pylint:disable=E0602
+        for chat_id in borg.storage.recvd_messages:  # pylint:disable=E0602
+            current_message = borg.storage.recvd_messages[chat_id]
+            user_id = current_message.from_id
+            message_id = current_message.id
+            # https://t.me/DeepLink/21
+            chat_id, _ = resolve_id(chat_id)
+            recvd_messages += "👉 tg://openmessage?chat_id={}&message_id={} \n".format(chat_id, message_id)
+            # recvd_messages += "👉 tg://openmessage?user_id={}&chat_id={}&message_id={} \n".format(user_id, chat_id, message_id)
         try:
+            if recvd_messages != "You received the following messages: \n":
+                await borg.send_message(  # pylint:disable=E0602
+                    Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
+                    recvd_messages
+                )
             await borg.send_message(  # pylint:disable=E0602
                 Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
                 "Set AFK mode to False"
@@ -29,8 +52,7 @@ async def set_not_afk(event):
                 reply_to=event.message.id,
                 silent=True
             )
-        borg.storage.USER_AFK = {}  # pylint:disable=E0602
-        borg.storage.afk_time = None  # pylint:disable=E0602
+        borg.storage.recvd_messages = {}
 
 
 @borg.on(events.NewMessage(pattern=r"\.afk ?(.*)", outgoing=True))  # pylint:disable=E0602
@@ -69,6 +91,7 @@ async def _(event):
 async def on_afk(event):
     if event.fwd_from:
         return
+    borg.storage.recvd_messages[event.chat_id] = event.message
     afk_since = "**a while ago**"
     current_message_text = event.message.message.lower()
     if "afk" in current_message_text:

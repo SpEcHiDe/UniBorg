@@ -35,9 +35,6 @@ async def _(event):
         await event.edit(str(exc))
     else:
         await event.edit("Successfully Promoted")
-        await asyncio.sleep(5)
-        await event.delete()
-
 
 
 @borg.on(events.NewMessage(pattern=r"prank\.promote ?(.*)", outgoing=True))
@@ -62,5 +59,3 @@ async def _(event):
         await event.edit(str(exc))
     else:
         await event.edit("Successfully Promoted")
-        await asyncio.sleep(5)
-        await event.delete()

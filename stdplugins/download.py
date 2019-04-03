@@ -23,12 +23,13 @@ async def _(event):
         await event.edit("Processing ...")
         first_message_id = event.reply_to_msg_id
         links = []
-        async for message in borg.iter_messages(
+        messages = await borg.get_messages(
             event.chat_id,
             min_id=first_message_id,
             max_id=current_message_id,
             from_user=borg.me
-        ):
+        )
+        for message in messages:
             current_message = message.message
             if current_message.startswith("http"):
                 links.append(current_message)

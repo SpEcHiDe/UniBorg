@@ -20,6 +20,8 @@ async def _(event):
     else:
         await event.edit("Invalid Syntax. Module stopping.")
         return
+    text = text.strip()
+    lan = lan.strip()
     try:
         translated_text = translate(text, lan)
         output_str = """**SOURCE**

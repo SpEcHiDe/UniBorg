@@ -57,29 +57,17 @@ async def _(event):
         await event.edit(str(e))
 
 
-if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:  # pylint:disable=E0602
+# pylint:disable=E0602
+if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
     @tgbot.on(events.InlineQuery)  # pylint:disable=E0602
     async def inline_handler(event):
         builder = event.builder
         result = None
         if event.query.user_id == borg.uid:  # pylint:disable=E0602
-            logger.info(event.stringify())  # pylint:disable=E0602
+            # logger.info(event.stringify())  # pylint:disable=E0602
             query = event.text
             rev_text = query[::-1]
-            if query.startswith("ping"):
-                ping_place_rs = query.split(" ")[1]
-                result = builder.article(
-                    "© @UniBorg",
-                    text="Pong\n{}".format(ping_place_rs),
-                    buttons=[
-                        [custom.Button.url("Join the Channel", "https://telegram.dog/UniBorg"), custom.Button.url(
-                            "Join the Group", "https://telegram.dog/ShrimadhaVahdamirhS")],
-                        [custom.Button.url(
-                            "Source Code", "https://GitLab.com/SpEcHiDe/UniBorg")]
-                    ],
-                    link_preview=False
-                )
-            elif "@UniBorg" in query:
+            if "@UniBorg" in query:
                 buttons = paginate_help(0, borg._plugins, "helpme")
                 result = builder.article(
                     "© @UniBorg",
@@ -109,9 +97,9 @@ You can log-in as Bot or User and do many cool things with your Telegram account
 All instaructions to run @UniBorg in your PC has been explained in https://github.com/SpEcHiDe/UniBorg""",
                 buttons=[
                     [custom.Button.url("Join the Channel", "https://telegram.dog/UniBorg"), custom.Button.url(
-                        "Join the Group", "https://t.me/joinchat/AHAujEjG4FBO-TH-NrVVbg")],
+                        "Join the Group", "tg://some_unsupported_feature")],
                     [custom.Button.url(
-                        "Source Code", "https://GitHub.com/SpEcHiDe/UniBorg")]
+                        "Source Code", "tg://some_unsupported_feature")]
                 ],
                 link_preview=False
             )
@@ -126,7 +114,6 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
                 event.data_match.group(1).decode("UTF-8"))
             buttons = paginate_help(
                 current_page_number + 1, borg._plugins, "helpme")
-            # logger.info(event.stringify())
             # https://t.me/TelethonChat/115200
             await event.edit(buttons=buttons)
         else:
@@ -145,7 +132,6 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
                 borg._plugins,  # pylint:disable=E0602
                 "helpme"
             )
-            # logger.info(event.stringify())
             # https://t.me/TelethonChat/115200
             await event.edit(buttons=buttons)
         else:
@@ -168,6 +154,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
 
 def paginate_help(page_number, loaded_plugins, prefix):
     number_of_rows = Config.NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD
+    number_of_cols = 2
     helpable_plugins = []
     for p in loaded_plugins:
         if not p.startswith("_"):
@@ -177,8 +164,8 @@ def paginate_help(page_number, loaded_plugins, prefix):
         "{} {}".format("✅", x),
         data="ub_plugin_{}".format(x))
         for x in helpable_plugins]
-    pairs = list(zip(modules[::2], modules[1::2]))
-    if len(modules) % 2 == 1:
+    pairs = list(zip(modules[::number_of_cols], modules[1::number_of_cols]))
+    if len(modules) % number_of_cols == 1:
         pairs.append((modules[-1],))
     max_num_pages = ceil(len(pairs) / number_of_rows)
     modulo_page = page_number % max_num_pages

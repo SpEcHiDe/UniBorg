@@ -11,10 +11,10 @@
 ## design
 
 The modular design of the project enhances your Telegram experience
-through [plugins](https://github.com/expectocode/uniborg/tree/master/stdplugins)
+through [plugins](https://github.com/SpEcHiDe/uniborg/tree/master/stdplugins)
 which you can enable or disable on demand.
 
-Each plugin gets the `borg`, `logger`, `Config` and `storage` magical
+Each plugin gets the `borg`, `logger`, `Config`, `tgbot` and `storage` magical
 [variables](https://github.com/spechide/UniBorg/blob/488eff632e65103ba7017d4f52777d22ddd52ea2/uniborg/uniborg.py#L76-L80)
 to ease their use. Thus creating a plugin as easy as adding
 a new file under the plugin directory to do the job:
@@ -22,10 +22,11 @@ a new file under the plugin directory to do the job:
 ```python
 # stdplugins/myplugin.py
 from telethon import events
+from uniborg.util import admin_cmd
 
-@borg.on(events.NewMessage(pattern='hi'))
+@borg.on(admin_cmd("hi"))
 async def handler(event):
-    await event.reply('hey')
+    await event.reply("hey")
 ```
 
 

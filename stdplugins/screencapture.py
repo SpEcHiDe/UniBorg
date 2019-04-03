@@ -1,11 +1,13 @@
 """Take screenshot of any website
 Syntax: .screencapture <Website URL>"""
-from telethon import events
+
 import io
 import requests
+from telethon import events
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.screencapture (.*)", outgoing=True))
+@borg.on(admin_cmd(r"\.screencapture (.*)"))
 async def _(event):
     if event.fwd_from:
         return

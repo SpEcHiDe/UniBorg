@@ -1,6 +1,6 @@
 """Default Permission in Telegram 5.0.1
 Syntax: .lock <option>
-Avaiilable Options: msg, media, sticker, gif, gamee, ainline, gpoll, adduser, cpin, changeinfo"""
+Available Options: msg, media, sticker, gif, gamee, ainline, gpoll, adduser, cpin, changeinfo"""
 from telethon import events, functions, types
 import asyncio
 
@@ -64,5 +64,4 @@ async def _(event):
     except Exception as e:
         await event.edit(str(e))
     else:
-        await asyncio.sleep(5)
-        await event.delete()
+        await event.edit("Current Chat Default Permissions Changed Successfully")

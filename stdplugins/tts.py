@@ -26,6 +26,8 @@ async def _(event):
     else:
         await event.edit("Invalid Syntax. Module stopping.")
         return
+    text = text.strip()
+    lan = lan.strip()
     if not os.path.isdir(Config.TMP_DOWNLOAD_DIRECTORY):
         os.makedirs(Config.TMP_DOWNLOAD_DIRECTORY)
     required_file_name = Config.TMP_DOWNLOAD_DIRECTORY + "voice.ogg"
