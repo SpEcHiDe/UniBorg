@@ -1,6 +1,7 @@
 import asyncio
 from telethon import events
 from telethon.tl.functions.channels import EditBannedRequest
+from uniborg.util import admin_cmd
 
 
 borg.storage.CHAT_FLOOD = {}  # pylint:disable=E0602
@@ -69,8 +70,7 @@ because he reached the defined flood limit.""".format(event.message.from_id),
             )
 
 
-# pylint:disable=E0602
-@borg.on(events.NewMessage(pattern=r"\.setflood (.*)", outgoing=True))
+@borg.on(admin_cmd("setflood (.*)"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return

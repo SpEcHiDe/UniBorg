@@ -7,7 +7,7 @@ from telethon.tl import types, functions
 
 HEADER = "「sed」\n"
 KNOWN_RE_BOTS = re.compile(
-    r'(regex|moku|BananaButler_|rgx|l4mR|kochu|Midukki|BanhammerMarie_)bot',
+    r'(regex|moku|BananaButler_|rgx|l4mR|kochu)bot',
     flags=re.IGNORECASE
 )
 

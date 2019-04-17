@@ -9,9 +9,10 @@ from telethon.tl.types import UserStatusEmpty, UserStatusLastMonth, UserStatusLa
 from telethon.tl import functions, types
 from time import sleep
 import asyncio
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern="\.unbanall ?(.*)", outgoing=True))
+@borg.on(admin_cmd("unbanall ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -40,7 +41,7 @@ async def _(event):
         await event.edit("{}: {} unbanned".format(event.chat_id, p))
 
 
-@borg.on(events.NewMessage(pattern="\.kick ?(.*)", outgoing=True))
+@borg.on(admin_cmd("kick ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

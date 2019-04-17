@@ -1,31 +1,18 @@
 """Send Chat Actions
 Syntax: .sca <option>
-Available Options: ra, rv, ua, up, uv, rr, mt, ud"""
-from telethon import events
-from telethon.tl.types import SendMessageRecordAudioAction, \
-    SendMessageRecordVideoAction, SendMessageUploadAudioAction, \
-    SendMessageUploadPhotoAction, SendMessageUploadVideoAction, \
-    SendMessageRecordRoundAction, SendMessageTypingAction, SendMessageUploadDocumentAction
-from telethon.tl.functions.messages import SetTypingRequest
-import random
+Options: typing, contact, game, location, voice, round, video, photo, document, cancel"""
+
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.sca ?(.*)", outgoing=True))
+@borg.on(admin_cmd("sca ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
+    await event.delete()
     input_str = event.pattern_match.group(1)
-    actions = {}
-    actions["ra"] = SendMessageRecordAudioAction()
-    actions["rv"] = SendMessageRecordVideoAction()
-    actions["ua"] = SendMessageUploadAudioAction(0)
-    actions["up"] = SendMessageUploadPhotoAction(0)
-    actions["uv"] = SendMessageUploadVideoAction(0)
-    actions["rr"] = SendMessageRecordRoundAction()
-    actions["mt"] = SendMessageTypingAction()
-    actions["ud"] = SendMessageUploadDocumentAction(0)
-    action = actions["mt"]
+    action = "typing"
     if input_str:
         action = actions[input_str]
-    await borg(SetTypingRequest(event.chat_id, action))
-    await event.delete()
+    async with borg.action(event.chat_id, action):
+        await asyncio.sleep(10)  # type for 10 seconds

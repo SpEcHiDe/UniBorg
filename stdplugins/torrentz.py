@@ -5,11 +5,11 @@ import urllib.parse
 from datetime import datetime
 from bs4 import BeautifulSoup
 from telethon import events
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(  # pylint:disable=E0602
-    pattern=r"\.torrentz (torrentz2\.eu|idop\.se) (.*)",
-    outgoing=True
+@borg.on(admin_cmd(  # pylint:disable=E0602
+    "torrentz (torrentz2\.eu|idop\.se) (.*)"
 ))
 async def _(event):
     if event.fwd_from:
@@ -43,9 +43,8 @@ async def _(event):
     await event.edit("Scrapped {} for {} in {} seconds. Obtained Results: \n {}".format(input_type, input_str, ms, output_str))
 
 
-@borg.on(events.NewMessage(  # pylint:disable=E0602
-    pattern=r"\.torrent (.*)",
-    outgoing=True
+@borg.on(admin_cmd(  # pylint:disable=E0602
+    "torrent (.*)"
 ))
 async def _(event):
     if event.fwd_from:

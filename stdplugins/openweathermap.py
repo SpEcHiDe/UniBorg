@@ -4,9 +4,10 @@ Syntax: .weather <Location> """
 import requests
 import time
 from telethon import events
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.weather (.*)", outgoing=True))
+@borg.on(admin_cmd("weather (.*)"))
 async def _(event):
     if event.fwd_from:
         return

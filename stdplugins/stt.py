@@ -4,9 +4,10 @@ from telethon import events
 import requests
 import os
 from datetime import datetime
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.stt (.*)", outgoing=True))
+@borg.on(admin_cmd("stt (.*)"))
 async def _(event):
     if event.fwd_from:
         return

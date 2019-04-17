@@ -5,9 +5,10 @@ import asyncio
 import json
 import requests
 from urllib.parse import quote
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.xkcd ?(.*)", outgoing=True))
+@borg.on(admin_cmd("xkcd ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

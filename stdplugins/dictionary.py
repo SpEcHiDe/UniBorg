@@ -6,7 +6,7 @@ from telethon import events
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(r"\.meaning (.*)"))
+@borg.on(admin_cmd("meaning (.*)"))
 async def _(event):
     if event.fwd_from:
         return

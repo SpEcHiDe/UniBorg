@@ -5,9 +5,10 @@
 Syntax: .ud Query"""
 from telethon import events
 import urbandict
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern="\.ud (.*)", outgoing=True))
+@borg.on(admin_cmd("ud (.*)"))
 async def _(event):
     if event.fwd_from:
         return

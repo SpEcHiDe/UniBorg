@@ -3,9 +3,10 @@ Syntax: .color <color_code>"""
 from telethon import events
 import os
 from PIL import Image, ImageColor
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.color (.*)", outgoing=True))
+@borg.on(admin_cmd("color (.*)"))
 async def _(event):
     if event.fwd_from:
         return

@@ -2,14 +2,22 @@
 Syntax: .get_admin"""
 from telethon import events
 from telethon.tl.types import ChannelParticipantsAdmins, ChannelParticipantAdmin, ChannelParticipantCreator
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern="\.get_admin ?(.*)", outgoing=True))
+@borg.on(admin_cmd("get_ad?(m)in ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
     mentions = "**Admins in this Channel**: \n"
-    input_str = event.pattern_match.group(1)
+    should_mention_admins = False
+    reply_message = None
+    pattern_match_str = event.pattern_match.group(1)
+    if "m" in pattern_match_str:
+        should_mention_admins = True
+        if event.reply_to_msg_id:
+            reply_message = await event.get_reply_message()
+    input_str = event.pattern_match.group(2)
     to_write_chat = await event.get_input_chat()
     chat = None
     if not input_str:
@@ -36,4 +44,11 @@ async def _(event):
                 mentions += "\n `{}`".format(x.id)
     except Exception as e:
         mentions += " " + str(e) + "\n"
-    await event.edit(mentions)
+    if should_mention_admins:
+        if reply_message:
+            await reply_message.reply(mentions)
+        else:
+            await event.reply(mentions)
+        await event.delete()
+    else:
+        await event.edit(mentions)

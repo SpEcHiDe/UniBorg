@@ -2,9 +2,10 @@
 Syntax: .get_poll"""
 from telethon import events
 import asyncio
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.get_poll", outgoing=True))
+@borg.on(admin_cmd("get_poll"))
 async def _(event):
     reply_message = await event.get_reply_message()
     if reply_message.media is None:

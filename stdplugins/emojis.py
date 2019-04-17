@@ -6,9 +6,10 @@ Available Commands:
 .emoji -_-"""
 from telethon import events
 import asyncio
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.emoji (.*)", outgoing=True))
+@borg.on(admin_cmd("emoji (.*)"))
 async def _(event):
     if event.fwd_from:
         return

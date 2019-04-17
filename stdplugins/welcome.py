@@ -41,7 +41,7 @@ async def _(event):
                 update_previous_welcome(event.chat_id, current_message.id)
 
 
-@borg.on(admin_cmd(r"\.savewelcome (.*)"))  # pylint:disable=E0602
+@borg.on(admin_cmd("savewelcome (.*)"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -50,7 +50,7 @@ async def _(event):
     await event.edit("Welcome note saved. ")
 
 
-@borg.on(admin_cmd(r"\.clearwelcome"))  # pylint:disable=E0602
+@borg.on(admin_cmd("clearwelcome"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return

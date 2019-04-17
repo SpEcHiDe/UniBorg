@@ -1,13 +1,14 @@
 """Globally Ban users from all the
 Group Administrations bots where you are SUDO
 Available Commands:
-!!gban REASON
-!!ungban REASON"""
+.gban REASON
+.ungban REASON"""
 from telethon import events
 import asyncio
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\!\!gban ?(.*)", outgoing=True))
+@borg.on(admin_cmd("gban ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -25,7 +26,7 @@ async def _(event):
     await event.delete()
 
 
-@borg.on(events.NewMessage(pattern=r"\!\!ungban ?(.*)", outgoing=True))
+@borg.on(admin_cmd("ungban ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

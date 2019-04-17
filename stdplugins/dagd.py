@@ -8,22 +8,10 @@ from telethon import events
 import os
 import requests
 import json
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.isup (.*)", outgoing=True))
-async def _(event):
-    if event.fwd_from:
-        return
-    input_str = event.pattern_match.group(1)
-    sample_url = "https://da.gd/up/{}?sslverify=1".format(input_str)
-    response_api = requests.get(sample_url).text
-    if response_api == 200:
-        await event.edit(input_str + " is online.")
-    else:
-        await event.edit("i can't seem to find {} on the internet".format(input_str))
-
-
-@borg.on(events.NewMessage(pattern=r"\.dns (.*)", outgoing=True))
+@borg.on(admin_cmd("dns (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -36,7 +24,7 @@ async def _(event):
         await event.edit("i can't seem to find {} on the internet".format(input_str))
 
 
-@borg.on(events.NewMessage(pattern=r"\.url (.*)", outgoing=True))
+@borg.on(admin_cmd("url (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -49,7 +37,7 @@ async def _(event):
         await event.edit("something is wrong. please try again later.")
 
 
-@borg.on(events.NewMessage(pattern=r"\.unshort (.*)", outgoing=True))
+@borg.on(admin_cmd("unshort (.*)"))
 async def _(event):
     if event.fwd_from:
         return

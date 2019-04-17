@@ -5,6 +5,8 @@ import asyncio
 from datetime import datetime
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
+from uniborg.util import admin_cmd
+
 
 unbanned_rights = ChatBannedRights(
     until_date=None,
@@ -42,7 +44,7 @@ banned_rights = ChatBannedRights(
 
 
 
-@borg.on(events.NewMessage(pattern=r"\.(ban|unban|mute) ?(.*)", outgoing=True))
+@borg.on(admin_cmd("(ban|unban|mute) ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

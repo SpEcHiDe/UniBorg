@@ -3,6 +3,7 @@ Check https://t.me/tgbeta/3505"""
 import asyncio
 from telethon import events
 from telethon.tl import functions, types
+from uniborg.util import admin_cmd
 
 
 borg.storage.NO_PM_LOG_USERS = []
@@ -25,7 +26,7 @@ async def monito_p_m_s(event):
                 logger.warn(str(e))
 
 
-@borg.on(events.NewMessage(pattern=r"\.nolog ?(.*)", outgoing=True))
+@borg.on(admin_cmd("nolog ?(.*)"))
 async def approve_p_m(event):
     if event.fwd_from:
         return

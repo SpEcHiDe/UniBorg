@@ -5,9 +5,10 @@
 Syntax: .wikipedia Query"""
 from telethon import events
 import wikipedia
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.wikipedia (.*)", outgoing=True))
+@borg.on(admin_cmd("wikipedia (.*)"))
 async def _(event):
     if event.fwd_from:
         return

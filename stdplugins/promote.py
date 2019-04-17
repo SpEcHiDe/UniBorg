@@ -4,9 +4,10 @@ import asyncio
 from datetime import datetime
 from telethon.tl.functions.channels import EditAdminRequest
 from telethon.tl.types import ChatAdminRights
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.promote ?(.*)", outgoing=True))
+@borg.on(admin_cmd("promote ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -37,7 +38,7 @@ async def _(event):
         await event.edit("Successfully Promoted")
 
 
-@borg.on(events.NewMessage(pattern=r"prank\.promote ?(.*)", outgoing=True))
+@borg.on(admin_cmd("prankpromote ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

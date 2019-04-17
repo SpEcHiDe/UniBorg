@@ -10,6 +10,7 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 from PIL import Image
 from telethon import events
+from uniborg.util import admin_cmd
 
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
@@ -31,7 +32,7 @@ def get_video_thumb(file, output=None, width=90):
         return output
 
 
-@borg.on(events.NewMessage(pattern=r"\.savethumbnail", outgoing=True))
+@borg.on(admin_cmd("savethumbnail"))
 async def _(event):
     if event.fwd_from:
         return
@@ -70,7 +71,7 @@ async def _(event):
         await event.edit("Reply to a photo to save custom thumbnail")
 
 
-@borg.on(events.NewMessage(pattern=r"\.clearthumbnail", outgoing=True))
+@borg.on(admin_cmd("clearthumbnail"))
 async def _(event):
     if event.fwd_from:
         return
@@ -79,7 +80,7 @@ async def _(event):
     await event.edit("✅ Custom thumbnail cleared succesfully.")
 
 
-@borg.on(events.NewMessage(pattern=r"\.getthumbnail", outgoing=True))
+@borg.on(admin_cmd("getthumbnail"))
 async def _(event):
     if event.fwd_from:
         return

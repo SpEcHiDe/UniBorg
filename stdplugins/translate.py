@@ -4,9 +4,10 @@ Available Commands:
 .tr LangaugeCode | text to sepak"""
 from telethon import events
 from mtranslate import translate
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.tr (.*)", outgoing=True))
+@borg.on(admin_cmd("tr (.*)"))
 async def _(event):
     if event.fwd_from:
         return

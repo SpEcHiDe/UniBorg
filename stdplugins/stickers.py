@@ -26,9 +26,10 @@ from telethon.tl.types import (
     InputStickerSetShortName,
     MessageMediaPhoto
 )
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.kangsticker ?(.*)", outgoing=True))
+@borg.on(admin_cmd("kangsticker ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -112,7 +113,7 @@ async def _(event):
     await event.edit(f"sticker added! Your pack can be found [here](t.me/addstickers/{packshortname})")
 
 
-@borg.on(events.NewMessage(pattern=r"\.packinfo", outgoing=True))
+@borg.on(admin_cmd("packinfo"))
 async def _(event):
     if event.fwd_from:
         return
@@ -147,7 +148,7 @@ async def _(event):
                      f"**Emojis In Pack:** {' '.join(pack_emojis)}")
 
 
-@borg.on(events.NewMessage(pattern=r"\.getsticker ?(.*)", outgoing=True))
+@borg.on(admin_cmd("getsticker ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

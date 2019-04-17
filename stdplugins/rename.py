@@ -17,7 +17,7 @@ from telethon import events
 from telethon.tl.types import DocumentAttributeVideo
 from telethon.errors import MessageNotModifiedError
 import time
-from uniborg.util import progress, humanbytes, time_formatter
+from uniborg.util import progress, humanbytes, time_formatter, admin_cmd
 
 
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
@@ -36,7 +36,7 @@ def get_video_thumb(file, output=None, width=90):
         return output
 
 
-@borg.on(events.NewMessage(pattern=r"\.rename (.*)", outgoing=True))
+@borg.on(admin_cmd("rename (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -65,7 +65,7 @@ async def _(event):
         await event.edit("Syntax // `.rename file.name` as reply to a Telegram media")
 
 
-@borg.on(events.NewMessage(pattern=r"\.rnupload (.*)", outgoing=True))
+@borg.on(admin_cmd("rnupload (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -112,7 +112,7 @@ async def _(event):
         await event.edit("Syntax // .rnupload file.name as reply to a Telegram media")
 
 
-@borg.on(events.NewMessage(pattern=r"\.rnstreamupload (.*)", outgoing=True))
+@borg.on(admin_cmd("rnstreamupload (.*)"))
 async def _(event):
     if event.fwd_from:
         return

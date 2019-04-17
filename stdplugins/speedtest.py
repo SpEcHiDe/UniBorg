@@ -5,9 +5,10 @@ from telethon import events
 from datetime import datetime
 import io
 import speedtest
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.speedtest ?(.*)", outgoing=True))
+@borg.on(admin_cmd("speedtest ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

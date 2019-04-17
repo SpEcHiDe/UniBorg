@@ -2,8 +2,10 @@
 Syntax: .coinflip [optional_choice]"""
 from telethon import events
 import random, re
+from uniborg.util import admin_cmd
 
-@borg.on(events.NewMessage(pattern=r"\.coinflip ?(.*)", outgoing=True))
+
+@borg.on(admin_cmd("coinflip ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

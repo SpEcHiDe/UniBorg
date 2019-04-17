@@ -3,10 +3,10 @@ Syntax: .ifsc rp <IFSC CODE>"""
 from telethon import events
 import requests
 import json
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.ifsc rp (.*)"))
-@borg.on(events.MessageEdited(pattern=r"\.ifsc rp (.*)"))
+@borg.on(admin_cmd("ifsc rp (.*)"))
 async def _(event):
     if event.fwd_from:
         return

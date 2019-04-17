@@ -4,11 +4,11 @@
 from math import ceil
 import re
 from telethon import events, custom
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(  # pylint:disable=E0602
-    pattern=r"\.ib (.[^ ]*) (.*)",
-    outgoing=True
+@borg.on(admin_cmd(  # pylint:disable=E0602
+    r"ib (.[^ ]*) (.*)"
 ))
 async def _(event):
     # https://stackoverflow.com/a/35524254/4723940
@@ -36,9 +36,8 @@ async def _(event):
             `{}`".format(bot_username, search_query, str(e)))
 
 
-@borg.on(events.NewMessage(  # pylint:disable=E0602
-    pattern=r"\.icb (.[^ ]*) (.[^ ]*) (.*)",
-    outgoing=True
+@borg.on(admin_cmd(  # pylint:disable=E0602
+    r"icb (.[^ ]*) (.[^ ]*) (.*)"
 ))
 async def _(event):
     if event.fwd_from:

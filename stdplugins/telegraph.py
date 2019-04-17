@@ -6,13 +6,14 @@ from telethon import events
 import os
 from datetime import datetime
 from telegraph import Telegraph, upload_file, exceptions
+from uniborg.util import admin_cmd
 
 telegraph = Telegraph()
 r = telegraph.create_account(short_name=Config.TELEGRAPH_SHORT_NAME)
 auth_url = r["auth_url"]
 
 
-@borg.on(events.NewMessage(pattern=r"\.telegraph (media|text)", outgoing=True))
+@borg.on(admin_cmd("telegraph (media|text)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -50,7 +51,9 @@ async def _(event):
             title_of_page = user_object.first_name # + " " + user_object.last_name
             # apparently, all Users do not have last_name field
             page_content = r_message.message
-            if r_message.media and page_content == "":
+            if r_message.media:
+                if page_content != "":
+                    title_of_page = page_content
                 downloaded_file_name = await borg.download_media(
                     r_message,
                     Config.TMP_DOWNLOAD_DIRECTORY

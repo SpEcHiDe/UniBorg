@@ -9,9 +9,10 @@ import subprocess
 from datetime import datetime
 from gtts import gTTS
 import asyncio
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.tts (.*)", outgoing=True))
+@borg.on(admin_cmd("tts (.*)"))
 async def _(event):
     if event.fwd_from:
         return

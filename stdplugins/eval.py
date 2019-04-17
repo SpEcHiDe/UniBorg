@@ -6,9 +6,10 @@ Syntax: .eval PythonCode"""
 from telethon import events, sync, errors, functions, types
 import inspect
 import io
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.eval ?((.|\n)*)", outgoing=True))
+@borg.on(admin_cmd("eval ?((.|\n)*)"))
 async def _(event):
     if event.fwd_from:
         return

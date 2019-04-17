@@ -2,9 +2,10 @@
 Syntax: .get_id"""
 from telethon import events
 from telethon.utils import pack_bot_file_id
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.get_id ?(.*)", outgoing=True))
+@borg.on(admin_cmd("get_id ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

@@ -5,6 +5,7 @@ from telethon import events
 import json
 import os
 import requests
+from uniborg.util import admin_cmd
 
 
 def ocr_space_file(filename, overlay=False, api_key=Config.OCR_SPACE_API_KEY, language='eng'):
@@ -63,7 +64,7 @@ def progress(current, total):
         current, total, (current / total) * 100))
 
 
-@borg.on(events.NewMessage(pattern=r"\.ocrlanguages", outgoing=True))
+@borg.on(admin_cmd("ocrlanguages"))
 async def get_ocr_languages(event):
     if event.fwd_from:
         return
@@ -96,7 +97,7 @@ async def get_ocr_languages(event):
     await event.edit(str(a))
 
 
-@borg.on(events.NewMessage(pattern=r"\.ocr (.*)", outgoing=True))
+@borg.on(admin_cmd("ocr (.*)"))
 async def parse_ocr_space_api(event):
     if event.fwd_from:
         return
@@ -114,7 +115,7 @@ async def parse_ocr_space_api(event):
         ParsedText = test_file["ParsedResults"][0]["ParsedText"]
         ProcessingTimeInMilliseconds = str(int(test_file["ProcessingTimeInMilliseconds"]) // 1000)
     except Exception as e:
-        await event.edit("Errors.\n {}\nReport This to @SpEcHlDe".format(str(e)))
+        await event.edit("Errors.\n `{}`\nReport This to @UniBorg\n\n`{}`".format(str(e), json.dumps(test_file, sort_keys=True, indent=4)))
     else:
         await event.edit("Read Document in {} seconds. \n{}".format(ProcessingTimeInMilliseconds, ParsedText))
     os.remove(downloaded_file_name)

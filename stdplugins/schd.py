@@ -2,9 +2,10 @@
 Syntax: .schd <time_in_seconds> ;=; <message to send>"""
 from telethon import events
 import asyncio
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.schd ?(.*)", outgoing=True))
+@borg.on(admin_cmd("schd ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

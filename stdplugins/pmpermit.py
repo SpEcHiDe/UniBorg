@@ -8,6 +8,7 @@ import json
 from telethon import events
 from telethon.tl import functions, types
 from sql_helpers.pmpermit_sql import is_approved, approve, disapprove, get_all_approved
+from uniborg.util import admin_cmd
 
 
 borg.storage.PM_WARNS = {}
@@ -50,7 +51,7 @@ async def monito_p_m_s(event):
             borg.storage.PREV_REPLY_MESSAGE[chat.id] = r
 
 
-@borg.on(events.NewMessage(pattern=r"\.approvepm ?(.*)", outgoing=True))
+@borg.on(admin_cmd("approvepm ?(.*)"))
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -61,13 +62,16 @@ async def approve_p_m(event):
             if not is_approved(chat.id):
                 if chat.id in borg.storage.PM_WARNS:
                     del borg.storage.PM_WARNS[chat.id]
+                if chat.id in borg.storage.PREV_REPLY_MESSAGE:
+                    await borg.storage.PREV_REPLY_MESSAGE[chat.id].delete()
+                    del borg.storage.PREV_REPLY_MESSAGE[chat.id]
                 approve(chat.id, reason)
                 await event.edit("Private Message Accepted")
                 await asyncio.sleep(3)
                 await event.delete()
 
 
-@borg.on(events.NewMessage(pattern=r"\.blockpm ?(.*)", outgoing=True))
+@borg.on(admin_cmd("blockpm ?(.*)"))
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -82,7 +86,7 @@ async def approve_p_m(event):
                 await borg(functions.contacts.BlockRequest(chat.id))
 
 
-@borg.on(events.NewMessage(pattern=r"\.list approved pms", outgoing=True))
+@borg.on(admin_cmd("list approved pms"))
 async def approve_p_m(event):
     if event.fwd_from:
         return

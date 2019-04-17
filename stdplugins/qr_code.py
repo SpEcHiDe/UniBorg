@@ -7,13 +7,14 @@ import asyncio
 from datetime import datetime
 import os
 import requests
+from uniborg.util import admin_cmd
 
 
 def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 
 
-@borg.on(events.NewMessage(pattern=r"\.getqr", outgoing=True))
+@borg.on(admin_cmd("getqr"))
 async def _(event):
     if event.fwd_from:
         return
@@ -37,7 +38,7 @@ async def _(event):
     await event.edit(qr_contents)
 
 
-@borg.on(events.NewMessage(pattern=r"\.makeqr ?(.*)", outgoing=True))
+@borg.on(admin_cmd("makeqr ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

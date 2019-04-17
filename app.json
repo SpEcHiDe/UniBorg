@@ -120,6 +120,10 @@
     "NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD": {
       "description": "Number of rows of modules that needs to be displayed in the .helpme command",
       "required": false
+    },
+    "COMMAND_HAND_LER": {
+      "description": "specify command handler that should be used for the plugins. This should be a valid \"regex\" pattern",
+      "required": false
     }
   },
   "addons": [{

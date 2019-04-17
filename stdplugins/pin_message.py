@@ -2,9 +2,10 @@
 Syntax: .cpin [LOUD]"""
 from telethon import events
 from telethon.tl import functions, types
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.cpin ?(.*)", outgoing=True))
+@borg.on(admin_cmd("cpin ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -15,7 +16,11 @@ async def _(event):
     if event.message.reply_to_msg_id is not None:
         message_id = event.message.reply_to_msg_id
         try:
-            await borg(functions.messages.UpdatePinnedMessageRequest(event.chat_id, message_id, silent))
+            await borg(functions.messages.UpdatePinnedMessageRequest(
+                event.chat_id,
+                message_id,
+                silent
+            ))
         except Exception as e:
             await event.edit(str(e))
         else:

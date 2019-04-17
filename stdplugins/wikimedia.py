@@ -2,9 +2,10 @@
 Syntax: .wikimedia Query"""
 from telethon import events
 import requests
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.wikimedia (.*)", outgoing=True))
+@borg.on(admin_cmd("wikimedia (.*)"))
 async def _(event):
     if event.fwd_from:
         return

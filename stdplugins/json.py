@@ -2,9 +2,10 @@
 Syntax: .json"""
 from telethon import events
 import io
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.json", outgoing=True))
+@borg.on(admin_cmd("json"))
 async def _(event):
     if event.fwd_from:
         return

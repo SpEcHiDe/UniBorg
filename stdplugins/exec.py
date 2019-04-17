@@ -9,9 +9,10 @@ from telethon.errors import MessageEmptyError, MessageTooLongError, MessageNotMo
 import io
 import asyncio
 import time
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.exec ?(.*)", outgoing=True))
+@borg.on(admin_cmd("exec ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

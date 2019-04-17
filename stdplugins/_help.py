@@ -1,8 +1,9 @@
 import sys
 from telethon import events, functions, __version__
+from uniborg.util import admin_cmd
 
 
-@borg.on(events.NewMessage(pattern=r"\.helpme", outgoing=True))  # pylint:disable=E0602
+@borg.on(admin_cmd("helpme"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -30,7 +31,7 @@ UserBot Forked from https://github.com/expectocode/uniborg""".format(
         await event.edit(help_string)
 
 
-@borg.on(events.NewMessage(pattern=r"\.dc", outgoing=True))  # pylint:disable=E0602
+@borg.on(admin_cmd("dc"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -38,7 +39,7 @@ async def _(event):
     await event.edit(result.stringify())
 
 
-@borg.on(events.NewMessage(pattern=r"\.config", outgoing=True))  # pylint:disable=E0602
+@borg.on(admin_cmd("config"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
