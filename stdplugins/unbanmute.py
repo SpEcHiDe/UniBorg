@@ -46,6 +46,8 @@ banned_rights = ChatBannedRights(
 
 @borg.on(admin_cmd("(ban|unban|mute) ?(.*)"))
 async def _(event):
+    # Space weirdness in regex required because argument is optional and other
+    # commands start with ".unban"
     if event.fwd_from:
         return
     start = datetime.now()
@@ -59,12 +61,14 @@ async def _(event):
     elif input_cmd == "mute":
         rights = muted_rights
     input_str = event.pattern_match.group(2)
-    reply_msg_id = event.message.id
+    reply_msg_id = event.reply_to_msg_id
     if reply_msg_id:
         r_mesg = await event.get_reply_message()
         to_ban_id = r_mesg.sender_id
-    elif input_str:
+    elif input_str and "all" not in input_str:
         to_ban_id = input_str
+    else:
+        return False
     try:
         await borg(EditBannedRequest(event.chat_id, to_ban_id, rights))
     except (Exception) as exc:

