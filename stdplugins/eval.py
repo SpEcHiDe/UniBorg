@@ -18,14 +18,12 @@ async def _(event):
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
-    evaluation = None
+    evaluation = eval(cmd)
     # https://t.me/telethonofftopic/43873
+    # https://t.me/TheUseLessGroup/40472
     try:
-        if inspect.isawaitable(eval(cmd)):
-            evaluation = await eval(cmd)
-        # https://t.me/telethonofftopic/43873
-        else:
-            evaluation = eval(cmd)
+        if inspect.isawaitable(evaluation):
+            evaluation = await evaluation
     except (Exception) as e:
         evaluation = str(e)
     # https://t.me/telethonofftopic/43873
