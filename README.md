@@ -13,7 +13,7 @@ Pluggable [``asyncio``](https://docs.python.org/3/library/asyncio.html)
 #### The Legacy Way
 Simply clone the repository and run the main file:
 ```sh
-git clone https://github.com/uniborg/uniborg.git
+git clone https://github.com/SpEcHiDe/UniBorg.git
 cd uniborg
 virtualenv -p /usr/bin/python3 venv
 . ./venv/bin/activate
