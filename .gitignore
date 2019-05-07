@@ -7,3 +7,5 @@ data/
 config.py
 sessions/
 
+.tox
+.history
