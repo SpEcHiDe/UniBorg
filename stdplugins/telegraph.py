@@ -13,7 +13,7 @@ r = telegraph.create_account(short_name=Config.TELEGRAPH_SHORT_NAME)
 auth_url = r["auth_url"]
 
 
-@borg.on(admin_cmd("telegraph (media|text)"))
+@borg.on(admin_cmd("telegraph (media|text) ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -23,6 +23,7 @@ async def _(event):
         Config.PRIVATE_GROUP_BOT_API_ID,
         "Created New Telegraph account {} for the current session. \n**Do not give this url to anyone, even if they say they are from Telegram!**".format(auth_url)
     )
+    optional_title = event.pattern_match.group(2)
     if event.reply_to_msg_id:
         start = datetime.now()
         r_message = await event.get_reply_message()
@@ -50,6 +51,8 @@ async def _(event):
             user_object = await borg.get_entity(r_message.from_id)
             title_of_page = user_object.first_name # + " " + user_object.last_name
             # apparently, all Users do not have last_name field
+            if optional_title:
+                title_of_page = optional_title
             page_content = r_message.message
             if r_message.media:
                 if page_content != "":

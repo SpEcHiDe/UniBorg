@@ -143,7 +143,7 @@ async def _(event):
             else:
                 thumb = get_video_thumb(downloaded_file_name, thumb_image_path)
             start = datetime.now()
-            metadata = extractMetadata(createParser(file_name))
+            metadata = extractMetadata(createParser(downloaded_file_name))
             duration = 0
             width = 0
             height = 0
@@ -162,7 +162,7 @@ async def _(event):
             try:
                 await borg.send_file(
                     event.chat_id,
-                    file_name,
+                    downloaded_file_name,
                     thumb=thumb,
                     caption=downloaded_file_name,
                     force_document=False,
@@ -186,7 +186,7 @@ async def _(event):
             else:
                 end = datetime.now()
                 os.remove(downloaded_file_name)
-                ms_two = (end_one - end).seconds
+                ms_two = (end - end_one).seconds
                 await event.edit("Downloaded in {} seconds. Uploaded in {} seconds.".format(ms_one, ms_two))
         else:
             await event.edit("File Not Found {}".format(input_str))

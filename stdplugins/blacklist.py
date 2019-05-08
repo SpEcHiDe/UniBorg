@@ -16,13 +16,7 @@ from uniborg.util import admin_cmd
 
 @borg.on(events.NewMessage(incoming=True))
 async def on_new_message(event):
-    # result = await borg(functions.channels.GetParticipantRequest(
-    #     channel=event.chat_id,
-    #     user_id=event.message.from_id
-    # ))
-    # if not event.is_private and isinstance(result.participant, (types.ChannelParticipantAdmin, types.ChannelParticipantCreator)):
-    #     # blacklist should not be affected for admins of the group
-    #     return False
+    # TODO: exempt admins from locks
     name = event.raw_text
     snips = sql.get_chat_blacklist(event.chat_id)
     for snip in snips:

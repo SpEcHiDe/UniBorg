@@ -22,7 +22,7 @@ async def _(event):
         await event.edit(str(e))
 
 
-@borg.on(admin_cmd("\.pname ((.|\n)*)"))  # pylint:disable=E0602,W0703
+@borg.on(admin_cmd("pname ((.|\n)*)"))  # pylint:disable=E0602,W0703
 async def _(event):
     if event.fwd_from:
         return

@@ -30,12 +30,14 @@ async def set_not_afk(event):
             current_message = borg.storage.recvd_messages[chat_id]
             user_id = current_message.from_id
             message_id = current_message.id
+            # check_condition = str(chat_id).startswith("-")
+            # chat_id, _ = resolve_id(chat_id)
             # https://t.me/DeepLink/21
-            # if str(chat_id).startswith("-"):
+            # if not check_condition:
             #     recvd_messages += "👉 tg://openmessage?chat_id={}&message_id={} \n".format(chat_id, message_id)
             # else:
-            #     chat_id, _ = resolve_id(chat_id)
             #     recvd_messages += "👉 https://t.me/c/{}/{} \n\n".format(chat_id, message_id)
+            chat_id, _ = resolve_id(chat_id)
             recvd_messages += "👉 tg://openmessage?chat_id={}&message_id={} \n".format(chat_id, message_id)
         try:
             if recvd_messages != "You received the following messages: \n":
@@ -44,7 +46,6 @@ async def set_not_afk(event):
                     recvd_messages,
                     link_preview=False
                 )
-                borg.storage.recvd_messages = {}
             await borg.send_message(  # pylint:disable=E0602
                 Config.PRIVATE_GROUP_BOT_API_ID,  # pylint:disable=E0602
                 "Set AFK mode to False"
@@ -58,6 +59,7 @@ async def set_not_afk(event):
                 reply_to=event.message.id,
                 silent=True
             )
+        borg.storage.recvd_messages = {}
 
 
 @borg.on(admin_cmd("afk ?((.|\n)*)"))  # pylint:disable=E0602
@@ -71,7 +73,8 @@ async def _(event):
                 types.InputPrivacyKeyStatusTimestamp()
             )
         )
-        if isinstance(last_seen_status.rules[0], types.PrivacyValueAllowAll):
+        # logger.info(last_seen_status)
+        if len(last_seen_status.rules) > 0 and isinstance(last_seen_status.rules[0], types.PrivacyValueAllowAll):
             borg.storage.afk_time = datetime.datetime.now()  # pylint:disable=E0602
         borg.storage.USER_AFK.update({"yes": reason})  # pylint:disable=E0602
         if reason:

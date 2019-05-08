@@ -27,14 +27,10 @@ async def _(event):
                     )
                 except Exception as e:  # pylint:disable=C0103,W0703
                     logger.warn(str(e))  # pylint:disable=E0602
-            try:
-                user_ids = event.action_message.action.users
-            except AttributeError:
-                user_ids = [event.action_message.from_id]
-            for user_id in user_ids:
+            user_s = await event.get_users()
+            for a_user in user_s:
                 current_saved_welcome_message = cws.custom_welcome_message
-                user_obj = await borg.get_entity(user_id)  # pylint:disable=E0602
-                mention = "[{}](tg://user?id={})".format(user_obj.first_name, user_id)
+                mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
                 current_message = await event.reply(
                     current_saved_welcome_message.format(mention=mention)
                 )

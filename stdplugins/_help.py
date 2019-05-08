@@ -3,7 +3,7 @@ from telethon import events, functions, __version__
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("helpme"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="helpme", allow_sudo=True))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -28,10 +28,11 @@ UserBot Forked from https://github.com/expectocode/uniborg""".format(
         )
         await event.delete()
     else:
-        await event.edit(help_string)
+        await event.reply(help_string)
+        await event.delete()
 
 
-@borg.on(admin_cmd("dc"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="dc"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -39,7 +40,7 @@ async def _(event):
     await event.edit(result.stringify())
 
 
-@borg.on(admin_cmd("config"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="config"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return

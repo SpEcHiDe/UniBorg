@@ -2,13 +2,13 @@ aiohttp
 beautifulsoup4
 cfscrape
 cryptg
+googletrans
 google_images_download
 gsearch
 gtts
 hachoir
 Pillow
 psycopg2
-mtranslate
 regex
 requests
 speedtest-cli

@@ -58,7 +58,7 @@ async def _(event):
                 force_document = True
                 supports_streaming = False
                 document_attributes = []
-                if single_file.endswith((".mkv", ".mp4", ".mp3", ".flac")):
+                if single_file.endswith((".mkv", ".mp4", ".mp3", ".flac", ".webm")):
                     metadata = extractMetadata(createParser(single_file))
                     duration = 0
                     width = 0
@@ -116,11 +116,11 @@ async def _(event):
         await event.edit("404: Directory Not Found")
 
 
-@borg.on(admin_cmd("upload (.*)"))
+@borg.on(admin_cmd(pattern="upload (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Processing ...")
+    mone = await event.reply("Processing ...")
     input_str = event.pattern_match.group(1)
     thumb = None
     if os.path.exists(thumb_image_path):
@@ -137,15 +137,15 @@ async def _(event):
             reply_to=event.message.id,
             thumb=thumb,
             progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, event, c_time, "trying to upload")
+                progress(d, t, mone, c_time, "trying to upload")
             )
         )
         end = datetime.now()
         os.remove(input_str)
         ms = (end - start).seconds
-        await event.edit("Uploaded in {} seconds.".format(ms))
+        await mone.edit("Uploaded in {} seconds.".format(ms))
     else:
-        await event.edit("404: File Not Found")
+        await mone.edit("404: File Not Found")
 
 
 def get_video_thumb(file, output=None, width=90):
@@ -161,17 +161,17 @@ def get_video_thumb(file, output=None, width=90):
         return output
 
 
-@borg.on(admin_cmd("uploadasstream (.*)"))
+@borg.on(admin_cmd(pattern="uploadasstream (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
-    await event.edit("Processing ...")
+    mone = await event.reply("Processing ...")
     input_str = event.pattern_match.group(1)
     thumb = None
     file_name = input_str
     if os.path.exists(file_name):
         if not file_name.endswith((".mkv", ".mp4", ".mp3", ".flac")):
-            await event.edit(
+            await mone.edit(
                 "Sorry. But I don't think {} is a streamable file.".format(file_name) + \
                 " Please try again.\n" + \
                 "**Supported Formats**: MKV, MP4, MP3, FLAC"
@@ -217,15 +217,15 @@ async def _(event):
                     )
                 ],
                 progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                    progress(d, t, event, c_time, "trying to upload")
+                    progress(d, t, mone, c_time, "trying to upload")
                 )
             )
         except Exception as e:
-            await event.edit(str(e))
+            await mone.edit(str(e))
         else:
             end = datetime.now()
             os.remove(input_str)
             ms = (end - start).seconds
-            await event.edit("Uploaded in {} seconds.".format(ms))
+            await mone.edit("Uploaded in {} seconds.".format(ms))
     else:
-        await event.edit("404: File Not Found")
+        await mone.edit("404: File Not Found")

@@ -34,6 +34,8 @@ async def monito_p_m_s(event):
     if Config.NO_P_M_SPAM and not sender.bot:
         chat = await event.get_chat()
         if not is_approved(chat.id) and chat.id != borg.uid:
+            logger.info(chat.stringify())
+            logger.info(borg.storage.PM_WARNS)
             if chat.id not in borg.storage.PM_WARNS:
                 borg.storage.PM_WARNS.update({chat.id: 0})
             if borg.storage.PM_WARNS[chat.id] == Config.MAX_FLOOD_IN_P_M_s:

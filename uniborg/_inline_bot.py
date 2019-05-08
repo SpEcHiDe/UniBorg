@@ -8,7 +8,7 @@ from uniborg.util import admin_cmd
 
 
 @borg.on(admin_cmd(  # pylint:disable=E0602
-    r"ib (.[^ ]*) (.*)"
+    pattern="ib (.[^ ]*) (.*)"
 ))
 async def _(event):
     # https://stackoverflow.com/a/35524254/4723940
@@ -37,7 +37,7 @@ async def _(event):
 
 
 @borg.on(admin_cmd(  # pylint:disable=E0602
-    r"icb (.[^ ]*) (.[^ ]*) (.*)"
+    pattern="icb (.[^ ]*) (.[^ ]*) (.*)"
 ))
 async def _(event):
     if event.fwd_from:
