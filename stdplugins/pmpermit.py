@@ -17,8 +17,8 @@ borg.storage.PREV_REPLY_MESSAGE = {}
 
 BAALAJI_TG_USER_BOT = "My Master hasn't approved you to PM."
 TG_COMPANION_USER_BOT = "Please wait for his response and don't spam his PM."
-UNIBORG_USER_BOT_WARN_ZERO = "I am currently offline. Please do not SPAM me."
-UNIBORG_USER_BOT_NO_WARN = "Hi! I will answer to your message soon. Please wait for my response and don't spam my PM. Thanks"
+UNIBORG_USER_BOT_WARN_ZERO = "[**SPAM REPORTED] You've been blocked!. Please do not SPAM me."
+UNIBORG_USER_BOT_NO_WARN = "[**NO PM SPAM WARN**] Hi! I will respond to your message soon. Please wait for my response and don't spam my PM (don't send two more messages, as I will **spam report** you instantly). Thanks (I will approve you if I regard your messages as polite)"
 
 
 @borg.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
