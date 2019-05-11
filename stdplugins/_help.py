@@ -16,7 +16,7 @@ async def _(event):
 Python {}
 Telethon {}
 
-UserBot Forked from https://github.com/expectocode/uniborg""".format(
+**Tripp Userbot, Online 24/7**""".format(
         sys.version,
         __version__
     )
