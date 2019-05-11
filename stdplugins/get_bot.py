@@ -9,14 +9,14 @@ from uniborg.util import admin_cmd
 async def _(event):
     if event.fwd_from:
         return
-    mentions = "**Bots in this Channel**: \n"
+    mentions = "**Bot(s) in this Chat**: \n"
     input_str = event.pattern_match.group(1)
     to_write_chat = await event.get_input_chat()
     chat = None
     if not input_str:
         chat = to_write_chat
     else:
-        mentions = "Bots in {} channel: \n".format(input_str)
+        mentions = "Bot(s) in {} chat: \n".format(input_str)
         try:
             chat = await borg.get_entity(input_str)
         except Exception as e:
