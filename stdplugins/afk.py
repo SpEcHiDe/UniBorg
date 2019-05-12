@@ -106,6 +106,9 @@ async def on_afk(event):
         # userbot's should not reply to other userbot's
         # https://core.telegram.org/bots/faq#why-doesn-39t-my-bot-see-messages-from-other-bots
         return False
+    if event.chat_id in Config.UB_BLACK_LIST_CHAT:
+        # don't reply if chat is added to blacklist
+        return False
     if borg.storage.USER_AFK and not (await event.get_sender()).bot:  # pylint:disable=E0602
         reason = borg.storage.USER_AFK["yes"]  # pylint:disable=E0602
         if borg.storage.afk_time:  # pylint:disable=E0602

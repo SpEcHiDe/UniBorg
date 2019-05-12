@@ -24,7 +24,7 @@ Telethon {}
     if tgbotusername is not None:
         results = await borg.inline_query(  # pylint:disable=E0602
             tgbotusername,
-            help_string
+            help_string + "\n\n" + s_help_string
         )
         await results[0].click(
             event.chat_id,
