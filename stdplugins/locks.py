@@ -212,5 +212,5 @@ async def _(event):
                         break
             if Config.G_BAN_LOGGER_GROUP != -100123456789 and is_ban_able:
                 ban_reason_msg = await event.reply(
-                    ") .".format(users_added_by)
+                    "".format(users_added_by)
                 )
