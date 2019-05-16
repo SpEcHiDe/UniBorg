@@ -11,7 +11,7 @@ async def _(event):
     if splugin_name in borg._plugins:
         s_help_string = borg._plugins[splugin_name].__doc__
     else:
-        s_help_string = "Module Not Loaded"
+        s_help_string = ""
     help_string = """@UniBorg
 Python {}
 Telethon {}
