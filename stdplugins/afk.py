@@ -140,8 +140,8 @@ async def on_afk(event):
             else:
                 afk_since = f"`{int(seconds)}s` **ago**"
         msg = None
-        message_to_reply = f"I'm afk since {afk_since} " + \
-            f"and I will be back soon\n__Reason:__ {reason}" \
+        message_to_reply = f"I'm afk (awag from keyboard) since {afk_since} " + \
+            f"and I will be back soon, please be patient and rest assured when I get online I'll respond to your message.\n__Reason:__ {reason}" \
             if reason \
             else f"I'm afk (away from the keyboard) since {afk_since} and I will be back soon, please be patient and rest assured when I get online I'll respond to your message."
         msg = await event.reply(message_to_reply)
