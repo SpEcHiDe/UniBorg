@@ -84,10 +84,7 @@ class Uniborg(TelegramClient):
         self.me = await self.get_me()
         self.uid = telethon.utils.get_peer_id(self.me)
 
-        @self.on(telethon.events.NewMessage(chats=self.config.UB_BLACK_LIST_CHAT))
-        async def on_official_groups(event):
-            # No other event handler will have a chance to handle this event
-            raise telethon.events.StopPropagation
+        self._logger.info(f"Logged in as {self.uid}")
 
 
     def load_plugin(self, shortname):

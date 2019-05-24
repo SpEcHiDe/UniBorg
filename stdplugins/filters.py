@@ -32,42 +32,44 @@ async def on_snip(event):
             # "I demand rights for us bots, we are equal to you humans." -Henri Koivuneva (t.me/UserbotTesting/2698)
             return False
     snips = get_all_filters(event.chat_id)
-    for snip in snips:
-        pattern = r"( |^|[^\w])" + re.escape(snip.keyword) + r"( |$|[^\w])"
-        if re.search(pattern, name, flags=re.IGNORECASE):
-            if snip.snip_type == TYPE_PHOTO:
-                media = types.InputPhoto(
-                    int(snip.media_id),
-                    int(snip.media_access_hash),
-                    snip.media_file_reference
+    if snips:
+        for snip in snips:
+            pattern = r"( |^|[^\w])" + re.escape(snip.keyword) + r"( |$|[^\w])"
+            if re.search(pattern, name, flags=re.IGNORECASE):
+                if snip.snip_type == TYPE_PHOTO:
+                    media = types.InputPhoto(
+                        int(snip.media_id),
+                        int(snip.media_access_hash),
+                        snip.media_file_reference
+                    )
+                elif snip.snip_type == TYPE_DOCUMENT:
+                    media = types.InputDocument(
+                        int(snip.media_id),
+                        int(snip.media_access_hash),
+                        snip.media_file_reference
+                    )
+                else:
+                    media = None
+                message_id = event.message.id
+                if event.reply_to_msg_id:
+                    message_id = event.reply_to_msg_id
+                await borg.send_message(
+                    event.chat_id,
+                    snip.reply,
+                    reply_to=message_id,
+                    file=media
                 )
-            elif snip.snip_type == TYPE_DOCUMENT:
-                media = types.InputDocument(
-                    int(snip.media_id),
-                    int(snip.media_access_hash),
-                    snip.media_file_reference
-                )
-            else:
-                media = None
-            message_id = event.message.id
-            if event.reply_to_msg_id:
-                message_id = event.reply_to_msg_id
-            await borg.send_message(
-                event.chat_id,
-                snip.reply,
-                reply_to=message_id,
-                file=media
-            )
-            if event.chat_id not in borg.storage.last_triggered_filters:
-                borg.storage.last_triggered_filters[event.chat_id] = []
-            borg.storage.last_triggered_filters[event.chat_id].append(name)
-            await asyncio.sleep(DELETE_TIMEOUT)
-            borg.storage.last_triggered_filters[event.chat_id].remove(name)
+                if event.chat_id not in borg.storage.last_triggered_filters:
+                    borg.storage.last_triggered_filters[event.chat_id] = []
+                borg.storage.last_triggered_filters[event.chat_id].append(name)
+                await asyncio.sleep(DELETE_TIMEOUT)
+                borg.storage.last_triggered_filters[event.chat_id].remove(name)
 
 
-@borg.on(admin_cmd("savefilter (.*)"))
+@borg.on(admin_cmd("savefilter (\S+) ?((.|\n)*)"))
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
+    meseg = event.pattern_match.group(2)
     msg = await event.get_reply_message()
     if msg:
         snip = {'type': TYPE_TEXT, 'text': msg.message or ''}
@@ -83,7 +85,9 @@ async def on_snip_save(event):
                 snip['id'] = media.id
                 snip['hash'] = media.access_hash
                 snip['fr'] = media.file_reference
-        add_filter(event.chat_id, name, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr'))
+    else:
+        snip = {'type': TYPE_TEXT, 'text': meseg or ''}
+    add_filter(event.chat_id, name, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr'))
     await event.edit(f"filter {name} saved successfully. Get it with {name}")
 
 

@@ -23,8 +23,8 @@ async def _(event):
 **Humidity**: {}%
 **wind**: {}m/s
 clouds: {}hpa
-**Sunrise**: {} UTC
-**Sunset**: {} UTC""".format(
+**Sunrise**: {} {}
+**Sunset**: {} {}""".format(
                 input_str,
                 response_api["main"]["temp"],
                 response_api["main"]["temp_min"],
@@ -34,7 +34,9 @@ clouds: {}hpa
                 response_api["clouds"]["all"],
                 # response_api["main"]["pressure"],
                 time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(response_api["sys"]["sunrise"])),
-                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(response_api["sys"]["sunset"]))
+                response_api["sys"]["country"],
+                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(response_api["sys"]["sunset"])),
+                response_api["sys"]["country"]
             )
         )
     else:

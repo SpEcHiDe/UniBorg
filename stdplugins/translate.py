@@ -1,4 +1,4 @@
-""" Google Text to Speech
+""" Google Translate
 Available Commands:
 .tr LanguageCode as reply to a message
 .tr LangaugeCode | text to sepak"""

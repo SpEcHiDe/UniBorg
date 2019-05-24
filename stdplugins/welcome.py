@@ -27,14 +27,13 @@ async def _(event):
                     )
                 except Exception as e:  # pylint:disable=C0103,W0703
                     logger.warn(str(e))  # pylint:disable=E0602
-            user_s = await event.get_users()
-            for a_user in user_s:
-                current_saved_welcome_message = cws.custom_welcome_message
-                mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
-                current_message = await event.reply(
-                    current_saved_welcome_message.format(mention=mention)
-                )
-                update_previous_welcome(event.chat_id, current_message.id)
+            a_user = await event.get_user()
+            current_saved_welcome_message = cws.custom_welcome_message
+            mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
+            current_message = await event.reply(
+                current_saved_welcome_message.format(mention=mention)
+            )
+            update_previous_welcome(event.chat_id, current_message.id)
 
 
 @borg.on(admin_cmd("savewelcome (.*)"))  # pylint:disable=E0602
