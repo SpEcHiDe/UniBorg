@@ -138,6 +138,14 @@
     "TZ": {
       "description": "set your default time zone for time related features to work correctly. Value should match the string here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
       "required": false
+    },
+    "VERY_STREAM_LOGIN": {
+      "description": "Get your API key from https://verystream.com",
+      "required": false
+    },
+    "VERY_STREAM_KEY": {
+      "description": "Get your API key from https://verystream.com",
+      "required": false
     }
   },
   "addons": [{

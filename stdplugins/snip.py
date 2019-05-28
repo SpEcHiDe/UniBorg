@@ -48,10 +48,9 @@ async def on_snip(event):
         await event.delete()
 
 
-@borg.on(admin_cmd("snips (\S+) ?((.|\n)*)"))
+@borg.on(admin_cmd("snips (.*)"))
 async def on_snip_save(event):
     name = event.pattern_match.group(1)
-    meseg = event.pattern_match.group(2)
     msg = await event.get_reply_message()
     if msg:
         snip = {'type': TYPE_TEXT, 'text': msg.message or ''}
@@ -67,10 +66,10 @@ async def on_snip_save(event):
                 snip['id'] = media.id
                 snip['hash'] = media.access_hash
                 snip['fr'] = media.file_reference
+        add_snip(name, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr'))
+        await event.edit("snip {name} saved successfully. Get it with #{name}".format(name=name))
     else:
-        snip = {'type': TYPE_TEXT, 'text': meseg or ''}
-    add_snip(name, snip['text'], snip['type'], snip.get('id'), snip.get('hash'), snip.get('fr'))
-    await event.edit("snip {name} saved successfully. Get it with #{name}".format(name=name))
+        await event.edit("Reply to a message with `snips keyword` to save the snip")
 
 
 @borg.on(admin_cmd("snipl"))

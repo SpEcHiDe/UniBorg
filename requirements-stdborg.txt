@@ -1,3 +1,4 @@
+aiofiles
 aiohttp
 beautifulsoup4
 cfscrape
@@ -9,6 +10,7 @@ gtts
 hachoir
 Pillow
 psycopg2
+python-magic
 regex
 requests
 speedtest-cli
