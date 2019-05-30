@@ -1,14 +1,13 @@
 """ Google Text to Speech
 Available Commands:
 .tts LanguageCode as reply to a message
-.tts LangaugeCode | text to sepak"""
-from telethon import events
-import requests
+.tts LangaugeCode | text to speak"""
+
+import asyncio
 import os
 import subprocess
 from datetime import datetime
 from gtts import gTTS
-import asyncio
 from uniborg.util import admin_cmd
 
 

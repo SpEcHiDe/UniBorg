@@ -1,7 +1,8 @@
 """Get Telegram Profile Picture and other information
 Syntax: .whois @username"""
+
 import html
-from telethon import events
+from telethon.tl.functions.photos import GetUserPhotosRequest
 from telethon.tl.functions.users import GetFullUserRequest
 from telethon.tl.types import MessageEntityMentionName
 from telethon.utils import get_input_location
@@ -16,7 +17,17 @@ async def _(event):
     if replied_user is None:
         await event.edit(str(error_i_a))
         return False
-    # logger.info(replied_user.stringify())
+    replied_user_profile_photos = await borg(GetUserPhotosRequest(
+        user_id=replied_user.user.id,
+        offset=42,
+        max_id=0,
+        limit=80
+    ))
+    replied_user_profile_photos_count = "NaN"
+    try:
+        replied_user_profile_photos_count = replied_user_profile_photos.count
+    except AttributeError as e:
+        pass
     user_id = replied_user.user.id
     # some people have weird HTML in their names
     first_name = html.escape(replied_user.user.first_name)
@@ -39,6 +50,7 @@ async def _(event):
 Name: <a href='tg://user?id={}'>{}</a>
 Bio: {}
 DC ID: {}
+Number of PPs: {}
 Restricted: {}
 Verified: {}
 Bot: {}
@@ -49,6 +61,7 @@ Groups in Common: {}
         first_name,
         user_bio,
         dc_id,
+        replied_user_profile_photos_count,
         replied_user.user.restricted,
         replied_user.user.verified,
         replied_user.user.bot,

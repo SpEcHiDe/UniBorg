@@ -1,7 +1,7 @@
 """Default Permission in Telegram 5.0.1
 Available Commands: .lock <option>, .unlock <option>, .locks
 API Options: msg, media, sticker, gif, gamee, ainline, gpoll, adduser, cpin, changeinfo
-DB Options: url, bots, forward, commands"""
+DB Options: bots, commands, email, forward, url"""
 
 from telethon import events, functions, types
 from sql_helpers.locks_sql import update_lock, is_locked, get_locks
@@ -16,7 +16,7 @@ async def _(event):
         return
     input_str = event.pattern_match.group("target")
     peer_id = event.chat_id
-    if input_str in (("url", "bots", "forward", "commands")):
+    if input_str in (("bots", "commands", "email", "forward", "url")):
         update_lock(peer_id, input_str, True)
         await event.edit(
             "Locked {}".format(input_str)
@@ -88,7 +88,7 @@ async def _(event):
         return
     input_str = event.pattern_match.group(1)
     peer_id = event.chat_id
-    if input_str in (("url", "bots", "forward", "commands")):
+    if input_str in (("bots", "commands", "email", "forward", "url")):
         update_lock(peer_id, input_str, False)
         await event.edit(
             "UnLocked {}".format(input_str)
@@ -109,10 +109,11 @@ async def _(event):
         res = "There are no DataBase locks in this chat"
     else:
         res = "Following are the DataBase locks in this chat: \n"
-        res += "👉 `url`: `{}`\n".format(current_db_locks.url)
-        res += "👉 `forward`: `{}`\n".format(current_db_locks.forward)
         res += "👉 `bots`: `{}`\n".format(current_db_locks.bots)
         res += "👉 `commands`: `{}`\n".format(current_db_locks.commands)
+        res += "👉 `email`: `{}`\n".format(current_db_locks.email)
+        res += "👉 `forward`: `{}`\n".format(current_db_locks.forward)
+        res += "👉 `url`: `{}`\n".format(current_db_locks.url)
     current_chat = await event.get_chat()
     try:
         current_api_locks = current_chat.default_banned_rights
@@ -138,30 +139,6 @@ async def _(event):
 async def check_incoming_messages(event):
     # TODO: exempt admins from locks
     peer_id = event.chat_id
-    if is_locked(peer_id, "forward"):
-        if event.fwd_from:
-            try:
-                await event.delete()
-            except Exception as e:
-                await event.reply(
-                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
-                )
-                update_lock(peer_id, "forward", False)
-    if is_locked(peer_id, "url"):
-        entities = event.message.entities
-        is_url = False
-        if entities:
-            for entity in entities:
-                if isinstance(entity, (types.MessageEntityTextUrl, types.MessageEntityUrl)):
-                    is_url = True
-        if is_url:
-            try:
-                await event.delete()
-            except Exception as e:
-                await event.reply(
-                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
-                )
-                update_lock(peer_id, "url", False)
     if is_locked(peer_id, "commands"):
         entities = event.message.entities
         is_command = False
@@ -177,6 +154,45 @@ async def check_incoming_messages(event):
                     "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
                 )
                 update_lock(peer_id, "commands", False)
+    if is_locked(peer_id, "forward"):
+        if event.fwd_from:
+            try:
+                await event.delete()
+            except Exception as e:
+                await event.reply(
+                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
+                )
+                update_lock(peer_id, "forward", False)
+    if is_locked(peer_id, "email"):
+        entities = event.message.entities
+        is_email = False
+        if entities:
+            for entity in entities:
+                if isinstance(entity, types.MessageEntityEmail):
+                    is_email = True
+        if is_email:
+            try:
+                await event.delete()
+            except Exception as e:
+                await event.reply(
+                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
+                )
+                update_lock(peer_id, "email", False)
+    if is_locked(peer_id, "url"):
+        entities = event.message.entities
+        is_url = False
+        if entities:
+            for entity in entities:
+                if isinstance(entity, (types.MessageEntityTextUrl, types.MessageEntityUrl)):
+                    is_url = True
+        if is_url:
+            try:
+                await event.delete()
+            except Exception as e:
+                await event.reply(
+                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
+                )
+                update_lock(peer_id, "url", False)
 
 
 @borg.on(events.ChatAction())  # pylint:disable=E0602
