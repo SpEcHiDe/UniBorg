@@ -76,6 +76,7 @@ async def _(event):
     await event.edit("☑️🔐🔐🔐🔐🔐🔐🔐")
     await asyncio.sleep(3)
     await event.edit("❌🔒🔒🔒🔒🔒🔒🔒")
-    await event.edit("Server shutdown")
+    await asyncio.sleep(3)
+    await event.edit("Server Successfully shutdown")
     await borg.disconnect()
    
