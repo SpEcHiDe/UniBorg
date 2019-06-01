@@ -12,9 +12,11 @@ async def _(event):
         
         
     await event.edit("Happy Birthday To You")
-    await asyncio.sleep(2)
+    await asyncio.sleep(3)
     await event.edit("Happy Birthday To You....")
-    await asyncio.sleep(2)
+    await asyncio.sleep(3)
     await event.edit("Happy Birthday Dear Ankit pro ser😉")
-    await asyncio.sleep(2)
-    await event.edit("Happy Birthdat To You")
+    await asyncio.sleep(3)
+    await event.edit("Happy Birthday To You")
+    await asyncio.sleep(3)
+    await event.edit(" 🎉 🎉 🎉 🎉 🎉 🎉 🎉")   
