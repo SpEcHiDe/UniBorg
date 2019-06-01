@@ -14,5 +14,5 @@ async def _(event):
 	for _ in range(21):
 		await asyncio.sleep(0.1)
 		await event.edit("".join(deq))
-		deq.rotate(3)
+		deq.rotate(1)
     
