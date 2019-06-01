@@ -19,4 +19,6 @@ async def _(event):
     await asyncio.sleep(3)
     await event.edit("Happy Birthday To You")
     await asyncio.sleep(3)
-    await event.edit(" 🎉 🎉 🎉 🎉 🎉 🎉 🎉")   
+    await event.edit(" 🎉 🎉 🎉 🎉 🎉 🎉 🎉") 
+    await asyncio.sleep(3)
+    await event.delete()
