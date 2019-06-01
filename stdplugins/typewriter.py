@@ -19,7 +19,7 @@ async def _(event):
     await asyncio.sleep(DELAY_BETWEEN_EDITS)
     for character in input_str:
         previous_text = previous_text + "" + character
-        typing_text = previous_text + "" 
+        typing_text = previous_text + "" + typing_symbol
         await event.edit(typing_text)
         await asyncio.sleep(DELAY_BETWEEN_EDITS)
         await event.edit(previous_text)
