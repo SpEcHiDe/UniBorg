@@ -12,3 +12,6 @@ async def _(event):
         
         
     await event.edit("✈----------")
+    await event.edit("-✈---------")
+    await event.edit("--✈--------")
+
