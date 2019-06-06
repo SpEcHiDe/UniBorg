@@ -5,7 +5,7 @@ import os
 import sys
 
 
-@borg.on(events.NewMessage(pattern=r"\.Acad", outgoing=True))
+@borg.on(events.NewMessage(pattern=r"\.bunny", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
