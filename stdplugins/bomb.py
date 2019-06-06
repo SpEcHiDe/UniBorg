@@ -11,12 +11,12 @@ async def _(event):
         return
        
  
-    await event.edit("||||| \
-                      ||||| \
+    await event.edit("|||||\
+                      |||||\
                       |||||")
     
-    await event.edit("💣 💣 \
-                      ||||| \
+    await event.edit("💣 💣\
+                      |||||\
                       |||||")
     
     await event.edit("||||| \
