@@ -11,6 +11,6 @@ async def _(event):
         return
        
 
-    await event.edit("(\_(\ \
-                     (=' :') ~♥ \
-                     (,(')(') ")
+    await event.edit("(\_(\\
+                     (=' :') ~♥\
+                     (,(')(')")
