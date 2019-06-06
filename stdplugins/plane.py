@@ -11,7 +11,20 @@ async def _(event):
         return
         
         
-    await event.edit("✈----------")
-    await event.edit("-✈---------")
-    await event.edit("--✈--------")
+    await event.edit("✈-------------")
+    await event.edit("-✈------------")
+    await event.edit("--✈-----------")
+    await event.edit("---✈----------")
+    await event.edit("----✈---------")
+    await event.edit("-----✈--------")
+    await event.edit("------✈-------")
+    await event.edit("-------✈------")
+    await event.edit("--------✈-----") 
+    await event.edit("---------✈----")
+    await event.edit("----------✈---")
+    await event.edit("-----------✈--")
+    await event.edit("------------✈-")
+    await event.edit("-------------✈")
+    await asyncio.sleep(3)
+    await event.delete()
 
