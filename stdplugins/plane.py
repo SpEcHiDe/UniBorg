@@ -1,4 +1,4 @@
-@By STARKTM1
+#By STARKTM1
 from telethon import events
 import asyncio
 import os
