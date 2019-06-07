@@ -9,6 +9,6 @@ import sys
 async def handler(event):
     if event.is_reply:
         replied = await event.get_reply_message()
-        sender = replied.sender
+        sender = replied.sender_id
         await client.download_profile_photo(sender)
         await event.respond('Saved your photo {}'.format(sender.username))
