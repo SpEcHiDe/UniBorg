@@ -5,7 +5,7 @@ import regex
 from telethon import events, utils
 from telethon.tl import types, functions
 
-HEADER = "「sed」\n"
+HEADER = "**Did you mean?** \n"
 KNOWN_RE_BOTS = re.compile(
     r'(regex|moku|BananaButler_|rgx|l4mR|kochu)bot',
     flags=re.IGNORECASE
@@ -99,12 +99,12 @@ async def on_regex(event):
     m, s = doit(chat_id, event.pattern_match, await event.get_reply_message())
 
     if m is not None:
-        s = f"{HEADER}{s}"
+        s = f"{HEADER}`{s}`"
         out = await borg.send_message(
             await event.get_input_chat(), s, reply_to=m.id
         )
         last_msgs[chat_id].appendleft(out)
     elif s is not None:
         await event.edit(s)
-
+        await event.delete()
     raise events.StopPropagation
