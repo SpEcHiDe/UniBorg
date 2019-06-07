@@ -55,6 +55,4 @@ async def _(event):
     await event.edit("Who Was The Head of Shield \nTime 01sec")
     await asyncio.sleep(1)
     await event.edit("Ok Time Up Plox......✌️ \nThe Answer Is Alexander Pierce")
-    
 
-    await event.edit("Who Was The Head of Shield 
