@@ -12,7 +12,7 @@ async def _(event):
         
     await event.edit("Question 1")
     await asyncio.sleep(2)
-    await event.edit("Who Was The Head of Shield")
+    await event.edit("Who Was The Head of Shield?")
     await asyncio.sleep(2)
     await event.edit("Who Was The Head of Shield \nTime 20sec")
     await asyncio.sleep(1)
@@ -55,4 +55,59 @@ async def _(event):
     await event.edit("Who Was The Head of Shield \nTime 01sec")
     await asyncio.sleep(1)
     await event.edit("Ok Time Up Plox......✌️ \nThe Answer Is Alexander Pierce")
+    
+@borg.on(events.NewMessage(pattern=r"\.quiz2", outgoing=True))
+async def _(event):
+    if event.fwd_from:
+        return
+        
+        
+    await event.edit("Question 2")
+    await asyncio.sleep(2)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER?")
+    await asyncio.sleep(2)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 20sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 19sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 18sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 17sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 16sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER?\nTime 15sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 14sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 13sec") 
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 12sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 11sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 10sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 09sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 08sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 07sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 06sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 05sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 04sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 03sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 02sec")
+    await asyncio.sleep(1)
+    await event.edit("WHAT IS THE NAME OF STAR-LORD/PETER QUILL’S MOTHER? \nTime 01sec")
+    await asyncio.sleep(1)
+    await event.edit("Ok Time Up Plox......✌️ \nThe Answer Is Meredith Quill")
+
+
+
 
