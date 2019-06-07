@@ -5,7 +5,7 @@ import os
 import sys
 
 
-@borg.on(events.NewMessage(pattern=r"\.bomb", outgoing=True))
+@borg.on(events.NewMessage(pattern=r"\.bombs", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
@@ -30,7 +30,7 @@ async def _(event):
     await event.edit("▪️▪️▪️▪️ \n▪️▪️▪️▪️ \n▪️▪️▪️▪️ \n▪️▪️▪️▪️ \n😵😵😵😵 \n")
     await asyncio.sleep(0.5)
     await event.edit("RIP PLOX...")
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     await event.delete()
     
     
