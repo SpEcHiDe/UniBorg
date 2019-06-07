@@ -46,7 +46,7 @@ async def _(event):
     await asyncio.sleep(1)
     await event.edit("Who Was The Head of Shield \nTime 05sec")
     await asyncio.sleep(1)
-    await event.edit("Who Was The Head of Shield \nTime 04sec"
+    await event.edit("Who Was The Head of Shield \nTime 04sec")
     await asyncio.sleep(1)
     await event.edit("Who Was The Head of Shield \nTime 03sec")
     await asyncio.sleep(1)
