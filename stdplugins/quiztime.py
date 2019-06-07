@@ -162,7 +162,7 @@ async def _(event):
     await event.edit("Ok Time Up Plox.......✌️ \n The Answer Is Agent 13 ")
     
     
- @borg.on(events.NewMessage(pattern=r"\.quiz4", outgoing=True))
+@borg.on(events.NewMessage(pattern=r"\.quiz4", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
