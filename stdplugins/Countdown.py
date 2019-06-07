@@ -14,7 +14,7 @@ import importlib.util
 
 @borg.on(events.NewMessage(outgoing=True, pattern='^\.(f?t)imer '))
 async def timer_blankx(e):
- txt=e.text[7:] + '\nDeleting in '
+ txt=e.text[7:] + '\nCountdown for '
  j=10
  k=j
  for j in range(j):
