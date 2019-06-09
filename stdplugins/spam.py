@@ -14,8 +14,8 @@ from telethon import events
 async def spammer(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         message = e.text
-        counter = int(message[6:9])
-        spam_message = str(e.text[9:])
+        counter = int(message[6:10])
+        spam_message = str(e.text[10:])
 
         await wait(
             [e.respond(spam_message) for i in range(counter)]
