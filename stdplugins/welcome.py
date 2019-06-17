@@ -36,12 +36,12 @@ async def _(event):
             update_previous_welcome(event.chat_id, current_message.id)
 
 
-@borg.on(admin_cmd("savewelcome (.*)"))  # pylint:disable=E0602
+@borg.on(admin_cmd("savewelcome"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
-    input_str = event.pattern_match.group(1)
-    add_welcome_setting(event.chat_id, input_str, True, 0)
+    input_str = event.text.split(None, 1)
+    add_welcome_setting(event.chat_id, input_str[1], True, 0)
     await event.edit("Welcome note saved. ")
 
 
