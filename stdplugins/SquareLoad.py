@@ -5,8 +5,42 @@ import os
 import sys
 
 
-@borg.on(events.NewMessage(pattern=r"\.bombs", outgoing=True))
+@borg.on(events.NewMessage(pattern=r"\.squ", outgoing=True))
 async def _(event):
     if event.fwd_from:
         return
 
+
+    await event.edit("╔═══════════════════╗
+ 
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░░
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    await event.edit("╔═══════════════════╗
+   ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ 
+╚═══════════════════╝")
+    await asyncio.sleep(1)
+    
