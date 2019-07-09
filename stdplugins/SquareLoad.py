@@ -11,8 +11,8 @@ async def _(event):
         return
 
 
-    await event.edit("╔═══════════════════╗ /n╚═══════════════════╝")
+    await event.edit("╔═══════════════════╗ \n╚═══════════════════╝")
     await asyncio.sleep(1)
-    await event.edit("╔═══════════════════╗ /n░ /n╚═══════════════════╝")
+    await event.edit("╔═══════════════════╗ \n░ \n╚═══════════════════╝")
     await asyncio.sleep(1)
     
