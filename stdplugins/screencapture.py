@@ -31,10 +31,13 @@ async def _(event):
         driver = webdriver.Chrome(chrome_options=chrome_options)
         input_str = event.pattern_match.group(1)
         driver.get(input_str)
+        await event.edit("Calculating Page Dimensions")
         height = driver.execute_script("return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);")
         width = driver.execute_script("return Math.max(document.body.scrollWidth, document.body.offsetWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
-        await event.edit("Opening web-page")
+        await event.edit("Painting web-page")
         driver.set_window_size(width + 100, height + 100)
+        # Add some pixels on top of the calculated dimensions 
+        # for good measure to make the scroll bars disappear
         im_png = driver.get_screenshot_as_png()
         # saves screenshot of entire page
         driver.close()
