@@ -16,7 +16,7 @@ async def _(cas):
             from requests import get
             r = get(f'https://combot.org/api/cas/check?user_id={id}') 
             r_dict = r.json() 
-            if r_dict['ok']==True:
+            if r_dict['ok']:
                try: 
                    more = r_dict['result']
                    from telethon.tl.types import ChatBannedRights
