@@ -41,9 +41,4 @@ async def _(event):
     await asyncio.sleep(1)
     await event.edit("╔═══════════════════╗ \n ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ \n╚═══════════════════╝")
     await asyncio.sleep(6)
-    await event.edit("╔═══════════════════╗ \n █████████▓▓▓▓░░ \n╚═══════════════════╝")
-    await asyncio.sleep(1)
-    await event.edit("╔═══════════════════╗ \n ██████████▓▓▓▓░░ \n╚═══════════════════╝")
-    await asyncio.sleep(1)
-    await event.edit("╔═══════════════════╗ \n ███████████▓▓▓▓░░ \n╚═══════════════════╝")
-    await asyncio.sleep(1)
+    
