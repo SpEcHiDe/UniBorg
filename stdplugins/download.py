@@ -13,7 +13,8 @@ from pySmartDL import SmartDL
 from telethon import events
 from telethon.tl.types import DocumentAttributeVideo
 from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
-
+from pySmartDL import SmartDL 
+import math
 
 @borg.on(admin_cmd(pattern="download ?(.*)", allow_sudo=True))
 async def _(event):
