@@ -1,7 +1,8 @@
 """Greetings
 Commands:
 .clearwelcome
-.savewelcome <Welcome Message>"""
+.setwelcome <Welcome Message>
+.listwelcome"""
 
 from telethon import events
 from telethon.utils import pack_bot_file_id
@@ -29,10 +30,26 @@ async def _(event):
                 except Exception as e:  # pylint:disable=C0103,W0703
                     logger.warn(str(e))  # pylint:disable=E0602
             a_user = await event.get_user()
+            chat = await event.get_chat()
+
+            title = chat.title if chat.title else "this chat"
+            participants = await event.client.get_participants(chat)
+            count = len(participants)
             current_saved_welcome_message = cws.custom_welcome_message
             mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
+            first = a_user.first_name
+            last = a_user.last_name
+            if last:
+                fullname = f"{first} {last}"
+            else:
+                fullname = first
+            username = f"@{a_user.username}" if a_user.username else mention
+            userid = a_user.id
+            current_saved_welcome_message = cws.custom_welcome_message
+            mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
+            
             current_message = await event.reply(
-                current_saved_welcome_message.format(mention=mention),
+                current_saved_welcome_message.format(mention=mention, title=title, count=count, first=first, last=last, fullname=fullname, username=username, userid=userid),
                 file=cws.media_file_id
             )
             update_previous_welcome(event.chat_id, current_message.id)
