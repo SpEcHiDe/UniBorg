@@ -6,7 +6,7 @@ import asyncio
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("sca (.*) (.*)"))
+@borg.on(admin_cmd(pattern="sca (.*) (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -24,6 +24,6 @@ async def _(event):
         await event.edit("Send in `.sca <option> <time in sec>` format.\nCheck `.scaoptions` for option.")
 
 
-@borg.on(admin_cmd("scaoptions"))
+@borg.on(admin_cmd(pattern="scaoptions"))
 async def _(event):
     await event.edit("**Options for sca** \n\n`typing`\n`contact`\n`game`\n`location`\n`voice`\n`round`\n`video`\n`photo`\n`document`\n`cancel`")
