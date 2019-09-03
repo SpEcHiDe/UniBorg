@@ -19,9 +19,13 @@ class Config(object):
     # Get your own ACCESS_KEY from http://api.screenshotlayer.com/api/capture
     SCREEN_SHOT_LAYER_ACCESS_KEY = os.environ.get("SCREEN_SHOT_LAYER_ACCESS_KEY", None)
     # Send .get_id in any group to fill this value.
-    PRIVATE_GROUP_BOT_API_ID = int(os.environ.get("PRIVATE_GROUP_BOT_API_ID", -100123456789))
+    PRIVATE_GROUP_BOT_API_ID = os.environ.get("PRIVATE_GROUP_BOT_API_ID", None)
+    if PRIVATE_GROUP_BOT_API_ID:
+        PRIVATE_GROUP_BOT_API_ID = int(PRIVATE_GROUP_BOT_API_ID)
     # Send .get_id in any channel to fill this value. ReQuired for @Manuel15 inspiration to work!
-    PRIVATE_CHANNEL_BOT_API_ID = int(os.environ.get("PRIVATE_CHANNEL_BOT_API_ID", -100123456789))
+    PRIVATE_CHANNEL_BOT_API_ID = os.environ.get("PRIVATE_CHANNEL_BOT_API_ID", None)
+    if PRIVATE_CHANNEL_BOT_API_ID:
+        PRIVATE_CHANNEL_BOT_API_ID = int(PRIVATE_CHANNEL_BOT_API_ID)
     # This is required for the plugins involving the file system.
     TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "./DOWNLOADS/")
     # This is required for the speech to text module. Get your USERNAME from https://console.bluemix.net/docs/services/speech-to-text/getting-started.html
@@ -34,9 +38,10 @@ class Config(object):
     # Get a Free API Key from OCR.Space
     OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY", None)
     # Send .get_id in any group with all your administration bots (added)
-    G_BAN_LOGGER_GROUP = int(os.environ.get("G_BAN_LOGGER_GROUP", -100123456789))
+    G_BAN_LOGGER_GROUP = os.environ.get("G_BAN_LOGGER_GROUP", None)
+    if G_BAN_LOGGER_GROUP:
+        G_BAN_LOGGER_GROUP = int(G_BAN_LOGGER_GROUP)
     # TG API limit. An album can have atmost 10 media!
-    GOOGLE_SEARCH_COUNT_LIMIT = int(os.environ.get("GOOGLE_SEARCH_COUNT_LIMIT", 9))
     TG_GLOBAL_ALBUM_LIMIT = int(os.environ.get("TG_GLOBAL_ALBUM_LIMIT", 9))
     # Telegram BOT Token from @BotFather
     TG_BOT_TOKEN_BF_HER = os.environ.get("TG_BOT_TOKEN_BF_HER", None)
@@ -96,6 +101,21 @@ class Config(object):
     # VeryStream only supports video formats
     VERY_STREAM_LOGIN = os.environ.get("VERY_STREAM_LOGIN", None)
     VERY_STREAM_KEY = os.environ.get("VERY_STREAM_KEY", None)
+    # Google Drive ()
+    G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID", None)
+    G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET", None)
+    G_DRIVE_AUTH_TOKEN_DATA = os.environ.get("G_DRIVE_AUTH_TOKEN_DATA", None)
+    #
+    TELE_GRAM_2FA_CODE = os.environ.get("TELE_GRAM_2FA_CODE", None)
+    #
+    GROUP_REG_SED_EX_BOT_S = os.environ.get("GROUP_REG_SED_EX_BOT_S", r"(regex|moku|BananaButler_|rgx|l4mR)bot")
+    # rapidleech plugins
+    OPEN_LOAD_LOGIN = os.environ.get("OPEN_LOAD_LOGIN", "0")
+    OPEN_LOAD_KEY = os.environ.get("OPEN_LOAD_KEY", "0")
+    # Google Chrome Selenium Stuff
+    # taken from https://github.com/jaskaranSM/UniBorg/blob/9072e3580cc6c98d46f30e41edbe73ffc9d850d3/sample_config.py#L104-L106
+    GOOGLE_CHROME_DRIVER = os.environ.get("GOOGLE_CHROME_DRIVER", None)
+    GOOGLE_CHROME_BIN = os.environ.get("GOOGLE_CHROME_BIN", None)
 
 
 class Production(Config):

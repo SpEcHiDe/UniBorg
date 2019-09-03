@@ -75,7 +75,7 @@ async def install_plug_in(event):
         try:
             downloaded_file_name = await borg.download_media(  # pylint:disable=E0602
                 await event.get_reply_message(),
-                borg._plugin_path  # pylint:disable=E0602
+                borg.n_plugin_path  # pylint:disable=E0602
             )
             if "(" not in downloaded_file_name:
                 borg.load_plugin_from_file(downloaded_file_name)  # pylint:disable=E0602

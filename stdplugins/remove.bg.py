@@ -24,13 +24,13 @@ from telethon import events
 from uniborg.util import progress, admin_cmd
 
 
-@borg.on(admin_cmd("remove\.bg ?(.*)"))
+@borg.on(admin_cmd(pattern="remove\.bg ?(.*)"))
 async def _(event):
     HELP_STR = "`.remove.bg` as reply to a media, or give a link as an argument to this command"
     if event.fwd_from:
         return
     if Config.REM_BG_API_KEY is None:
-        await event.edit("You need API token from remove.bg to use this plugin.")
+        await event.edit("You need API token from remove.bg to use this plugin.\nor Try @Remove_BGBot ")
         return False
     input_str = event.pattern_match.group(1)
     start = datetime.now()

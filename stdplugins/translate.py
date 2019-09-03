@@ -1,16 +1,19 @@
 """ Google Translate
 Available Commands:
 .tr LanguageCode as reply to a message
-.tr LangaugeCode | text to sepak"""
+.tr LangaugeCode | text to translate"""
 
+import emoji
 from googletrans import Translator
-from telethon import events
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("tr ?(.*)"))
+@borg.on(admin_cmd(pattern="tr ?(.*)"))
 async def _(event):
     if event.fwd_from:
+        return
+    if "trim" in event.raw_text:
+        # https://t.me/c/1220993104/192075
         return
     input_str = event.pattern_match.group(1)
     if event.reply_to_msg_id:
@@ -22,16 +25,19 @@ async def _(event):
     else:
         await event.edit("`.tr LanguageCode` as reply to a message")
         return
-    text = text.strip()
+    text = emoji.demojize(text.strip())
     lan = lan.strip()
     translator = Translator()
     try:
         translated = translator.translate(text, dest=lan)
+        after_tr_text = translated.text
+        # TODO: emojify the :
+        # either here, or before translation
         output_str = """**TRANSLATED** from {} to {}
 {}""".format(
             translated.src,
             lan,
-            translated.text
+            after_tr_text
         )
         await event.edit(output_str)
     except Exception as exc:

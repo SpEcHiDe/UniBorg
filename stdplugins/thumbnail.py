@@ -16,7 +16,7 @@ from uniborg.util import admin_cmd
 thumb_image_path = Config.TMP_DOWNLOAD_DIRECTORY + "/thumb_image.jpg"
 
 
-def get_video_thumb(file, output=None, width=90):
+def get_video_thumb(file, output=None, width=320):
     output = file + ".jpg"
     metadata = extractMetadata(createParser(file))
     p = subprocess.Popen([
@@ -32,7 +32,7 @@ def get_video_thumb(file, output=None, width=90):
         return output
 
 
-@borg.on(admin_cmd("savethumbnail"))
+@borg.on(admin_cmd(pattern="savethumbnail"))
 async def _(event):
     if event.fwd_from:
         return
@@ -58,8 +58,8 @@ async def _(event):
         Image.open(downloaded_file_name).convert("RGB").save(downloaded_file_name)
         img = Image.open(downloaded_file_name)
         # https://stackoverflow.com/a/37631799/4723940
-        # img.thumbnail((90, 90))
-        img.resize((90, height))
+        # img.thumbnail((320, 320))
+        img.resize((320, height))
         img.save(thumb_image_path, "JPEG")
         # https://pillow.readthedocs.io/en/3.1.x/reference/Image.html#create-thumbnails
         os.remove(downloaded_file_name)
@@ -71,7 +71,7 @@ async def _(event):
         await event.edit("Reply to a photo to save custom thumbnail")
 
 
-@borg.on(admin_cmd("clearthumbnail"))
+@borg.on(admin_cmd(pattern="clearthumbnail"))
 async def _(event):
     if event.fwd_from:
         return
@@ -80,7 +80,7 @@ async def _(event):
     await event.edit("✅ Custom thumbnail cleared succesfully.")
 
 
-@borg.on(admin_cmd("getthumbnail"))
+@borg.on(admin_cmd(pattern="getthumbnail"))
 async def _(event):
     if event.fwd_from:
         return

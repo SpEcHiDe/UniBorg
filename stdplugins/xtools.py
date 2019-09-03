@@ -8,7 +8,7 @@ import requests
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("xtools (.*)"))
+@borg.on(admin_cmd(pattern="xtools (.*)"))
 async def _(event):
     if event.fwd_from:
         return

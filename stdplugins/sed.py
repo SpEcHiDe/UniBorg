@@ -7,7 +7,7 @@ from telethon.tl import types, functions
 
 HEADER = "**Did you mean?** \n"
 KNOWN_RE_BOTS = re.compile(
-    r'(regex|moku|BananaButler_|rgx|l4mR|kochu)bot',
+    Config.GROUP_REG_SED_EX_BOT_S,
     flags=re.IGNORECASE
 )
 
@@ -91,7 +91,7 @@ async def on_regex(event):
         return
     if not event.is_private and\
             await group_has_sedbot(await event.get_input_chat()):
-        await event.edit("This group has a sed bot. Ignoring this message!")
+        # await event.edit("This group has a sed bot. Ignoring this message!")
         return
 
     chat_id = utils.get_peer_id(await event.get_input_chat())

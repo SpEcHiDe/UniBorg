@@ -8,7 +8,7 @@ from telethon.tl import functions
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("pbio (.*)"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="pbio (.*)"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -22,7 +22,7 @@ async def _(event):
         await event.edit(str(e))
 
 
-@borg.on(admin_cmd("pname ((.|\n)*)"))  # pylint:disable=E0602,W0703
+@borg.on(admin_cmd(pattern="pname ((.|\n)*)"))  # pylint:disable=E0602,W0703
 async def _(event):
     if event.fwd_from:
         return
@@ -41,7 +41,7 @@ async def _(event):
         await event.edit(str(e))
 
 
-@borg.on(admin_cmd("ppic"))  # pylint:disable=E0602
+@borg.on(admin_cmd(pattern="ppic"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return

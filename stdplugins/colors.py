@@ -6,7 +6,7 @@ from PIL import Image, ImageColor
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("color (.*)"))
+@borg.on(admin_cmd(pattern="color (.*)"))
 async def _(event):
     if event.fwd_from:
         return

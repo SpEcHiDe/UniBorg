@@ -12,7 +12,7 @@ import asyncio
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("unbanall ?(.*)"))
+@borg.on(admin_cmd(pattern="unbanall ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -41,7 +41,7 @@ async def _(event):
         await event.edit("{}: {} unbanned".format(event.chat_id, p))
 
 
-@borg.on(admin_cmd("kick ?(.*)"))
+@borg.on(admin_cmd(pattern="ikuck ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

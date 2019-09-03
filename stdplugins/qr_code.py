@@ -6,15 +6,16 @@ from telethon import events
 import asyncio
 from datetime import datetime
 import os
-import requests
 from uniborg.util import admin_cmd
+import qrcode
+from bs4 import BeautifulSoup
 
 
 def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd("getqr"))
+@borg.on(admin_cmd(pattern="getqr"))
 async def _(event):
     if event.fwd_from:
         return
@@ -26,11 +27,31 @@ async def _(event):
         Config.TMP_DOWNLOAD_DIRECTORY,
         progress_callback=progress
     )
-    url = "https://api.qrserver.com/v1/read-qr-code/?outputformat=json"
-    files = {"file": open(downloaded_file_name, "rb")}
-    r = requests.post(url, files=files).json()
-    qr_contents = r[0]["symbol"][0]["data"]
+    # parse the Official ZXing webpage to decode the QR
+    command_to_exec = [
+        "curl",
+        "-X", "POST",
+        "-F", "f=@" + downloaded_file_name + "",
+        "https://zxing.org/w/decode"
+    ]
+    process = await asyncio.create_subprocess_exec(
+        *command_to_exec,
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    # Wait for the subprocess to finish
+    stdout, stderr = await process.communicate()
+    e_response = stderr.decode().strip()
+    t_response = stdout.decode().strip()
     os.remove(downloaded_file_name)
+    if not t_response:
+        logger.info(e_response)
+        logger.info(t_response)
+        await event.edit("@oo0pps .. something wrongings. Failed to decode QRCode")
+        return
+    soup = BeautifulSoup(t_response, "html.parser")
+    qr_contents = soup.find_all("pre")[0].text
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit("Obtained QRCode contents in {} seconds.\n{}".format(ms, qr_contents))
@@ -38,7 +59,7 @@ async def _(event):
     await event.edit(qr_contents)
 
 
-@borg.on(admin_cmd("makeqr ?(.*)"))
+@borg.on(admin_cmd(pattern="makeqr ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -68,19 +89,24 @@ async def _(event):
             message = previous_message.message
     else:
         message = "SYNTAX: `.makeqr <long text to include>`"
-    url = "https://api.qrserver.com/v1/create-qr-code/?data={}&size=200x200&charset-source=UTF-8&charset-target=UTF-8&ecc=L&color=0-0-0&bgcolor=255-255-255&margin=1&qzone=0&format=jpg"
-    r = requests.get(url.format(message), stream=True)
-    required_file_name = Config.TMP_DOWNLOAD_DIRECTORY + " " + str(datetime.now()) + ".webp"
-    with open(required_file_name, "wb") as fd:
-        for chunk in r.iter_content(chunk_size=128):
-            fd.write(chunk)
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(message)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save("img_file.webp", "PNG")
     await borg.send_file(
         event.chat_id,
-        required_file_name,
+        "img_file.webp",
+        caption=message,
         reply_to=reply_msg_id,
         progress_callback=progress
     )
-    os.remove(required_file_name)
+    os.remove("img_file.webp")
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit("Created QRCode in {} seconds".format(ms))

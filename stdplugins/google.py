@@ -10,7 +10,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from google_images_download import google_images_download
-from gsearch.googlesearch import search
 from uniborg.util import admin_cmd
 
 
@@ -18,16 +17,23 @@ def progress(current, total):
     logger.info("Downloaded {} of {}\nCompleted {}".format(current, total, (current / total) * 100))
 
 
-@borg.on(admin_cmd("google search (.*)"))
+@borg.on(admin_cmd(pattern="google search (.*)"))
 async def _(event):
     if event.fwd_from:
         return
     start = datetime.now()
     await event.edit("Processing ...")
+    # SHOW_DESCRIPTION = False
     input_str = event.pattern_match.group(1) # + " -inurl:(htm|html|php|pls|txt) intitle:index.of \"last modified\" (mkv|mp4|avi|epub|pdf|mp3)"
-    search_results = search(input_str, num_results=Config.GOOGLE_SEARCH_COUNT_LIMIT)
+    input_url = "https://bots.shrimadhavuk.me/search/?q={}".format(input_str)
+    headers = {"USER-AGENT": "UniBorg"}
+    response = requests.get(input_url, headers=headers).json()
     output_str = " "
-    for text, url in search_results:
+    for result in response["results"]:
+        text = result.get("title")
+        url = result.get("url")
+        description = result.get("description")
+        image = result.get("image")
         output_str += " 👉🏻  [{}]({}) \n\n".format(text, url)
     end = datetime.now()
     ms = (end - start).seconds
@@ -36,7 +42,7 @@ async def _(event):
     await event.edit("Google: {}\n{}".format(input_str, output_str), link_preview=False)
 
 
-@borg.on(admin_cmd("google image (.*)"))
+@borg.on(admin_cmd(pattern="google image (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -55,7 +61,8 @@ async def _(event):
         "output_directory": Config.TMP_DOWNLOAD_DIRECTORY
     }
     paths = response.download(arguments)
-    lst = paths[input_str]
+    logger.info(paths)
+    lst = paths[0].get(input_str)
     await borg.send_file(
         event.chat_id,
         lst,
@@ -63,6 +70,7 @@ async def _(event):
         reply_to=event.message.id,
         progress_callback=progress
     )
+    logger.info(lst)
     for each_file in lst:
         os.remove(each_file)
     end = datetime.now()
@@ -72,7 +80,7 @@ async def _(event):
     await event.delete()
 
 
-@borg.on(admin_cmd("google reverse search"))
+@borg.on(admin_cmd(pattern="google reverse search"))
 async def _(event):
     if event.fwd_from:
         return

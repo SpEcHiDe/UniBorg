@@ -24,8 +24,8 @@ print(spechide.stringify())
 """Interactive client to test various things
 """
 if __name__ == "__main__":
-  """@client.on(events.NewMessage)
+  @client.on(events.NewMessage)
   def myeventhandler(event):
-    print(event.raw_text)"""
+    print(event.raw_text)
   print("Loaded")
-  # client.run_until_disconnected()
+  client.run_until_disconnected()

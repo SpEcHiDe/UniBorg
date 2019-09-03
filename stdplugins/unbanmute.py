@@ -44,7 +44,7 @@ banned_rights = ChatBannedRights(
 
 
 
-@borg.on(admin_cmd("(ban|unban|mute) ?(.*)"))
+@borg.on(admin_cmd(pattern="(ban|unban|mute) ?(.*)"))
 async def _(event):
     # Space weirdness in regex required because argument is optional and other
     # commands start with ".unban"

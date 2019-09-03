@@ -3,31 +3,54 @@ Syntax: .eval PythonCode"""
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
-from telethon import events, sync, errors, functions, types
+
+from telethon import events, errors, functions, types
 import inspect
+import traceback
+import asyncio
+import sys
 import io
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd("eval ?((.|\n)*)"))
+@borg.on(admin_cmd(pattern="eval"))
 async def _(event):
     if event.fwd_from:
         return
     await event.edit("Processing ...")
-    cmd = event.pattern_match.group(1)
+    cmd = event.text.split(" ", maxsplit=1)[1]
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
-    evaluation = eval(cmd)
-    # https://t.me/telethonofftopic/43873
-    # https://t.me/TheUseLessGroup/40472
+
+    old_stderr = sys.stderr
+    old_stdout = sys.stdout
+    redirected_output = sys.stdout = io.StringIO()
+    redirected_error = sys.stderr = io.StringIO()
+    stdout, stderr, exc = None, None, None
+
     try:
-        if inspect.isawaitable(evaluation):
-            evaluation = await evaluation
-    except (Exception) as e:
-        evaluation = str(e)
-    # https://t.me/telethonofftopic/43873
+        await aexec(cmd, event)
+    except Exception:
+        exc = traceback.format_exc()
+
+    stdout = redirected_output.getvalue()
+    stderr = redirected_error.getvalue()
+    sys.stdout = old_stdout
+    sys.stderr = old_stderr
+
+    evaluation = ""
+    if exc:
+        evaluation = exc
+    elif stderr:
+        evaluation = stderr
+    elif stdout:
+        evaluation = stdout
+    else:
+        evaluation = "Success"
+
     final_output = "**EVAL**: `{}` \n\n **OUTPUT**: \n`{}` \n".format(cmd, evaluation)
+
     if len(final_output) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(final_output)) as out_file:
             out_file.name = "eval.text"
@@ -42,3 +65,11 @@ async def _(event):
             await event.delete()
     else:
         await event.edit(final_output)
+
+
+async def aexec(code, event):
+    exec(
+        f'async def __aexec(event): ' +
+        ''.join(f'\n {l}' for l in code.split('\n'))
+    )
+    return await locals()['__aexec'](event)
