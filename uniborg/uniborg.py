@@ -5,6 +5,7 @@ import asyncio
 import importlib.util
 import logging
 from pathlib import Path
+import sys
 
 from telethon import TelegramClient
 import telethon.utils
@@ -90,11 +91,11 @@ class Uniborg(TelegramClient):
         self.load_plugin_from_file(f"{self.n_plugin_path}/{shortname}.py")
 
     def load_plugin_from_file(self, path):
-        path = Path(path)
-        shortname = path.stem
+        paths = Path(path)
+        shortname = paths.stem
         name = f"_UniborgPlugins.{self._name}.{shortname}"
 
-        spec = importlib.util.spec_from_file_location(name, path)
+        spec = importlib.util.spec_from_file_location(name, paths)
         mod = importlib.util.module_from_spec(spec)
 
         mod.borg = self
@@ -106,7 +107,8 @@ class Uniborg(TelegramClient):
 
 
         spec.loader.exec_module(mod)
-        self._plugins[shortname] = mod
+        sys.modules["stdplugins."+shortname]
+        self._plugins[path.replace(".py", "").replace("/", ".")] = mod
         self._logger.info(f"Successfully loaded plugin {shortname}")
 
     def remove_plugin(self, shortname):
