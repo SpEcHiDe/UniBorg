@@ -7,7 +7,7 @@ from telethon.tl.types import User, Chat, Channel
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="count"))
+@borg.on(admin_cmd("count"))
 async def _(event):
     if event.fwd_from:
         return

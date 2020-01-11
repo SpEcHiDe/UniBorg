@@ -24,13 +24,13 @@ from telethon import events
 from uniborg.util import progress, admin_cmd
 
 
-@borg.on(admin_cmd(pattern="remove\.bg ?(.*)"))
+@borg.on(admin_cmd("bg ?(.*)"))
 async def _(event):
     HELP_STR = "`.remove.bg` as reply to a media, or give a link as an argument to this command"
     if event.fwd_from:
         return
     if Config.REM_BG_API_KEY is None:
-        await event.edit("You need API token from remove.bg to use this plugin.\nor Try @Remove_BGBot ")
+        await event.edit("You need API token from remove.bg to use this plugin.")
         return False
     input_str = event.pattern_match.group(1)
     start = datetime.now()
@@ -61,7 +61,7 @@ async def _(event):
     contentType = output_file_name.headers.get("content-type")
     if "image" in contentType:
         with io.BytesIO(output_file_name.content) as remove_bg_image:
-            remove_bg_image.name = "@UniBorg_ReMove.png"
+            remove_bg_image.name = "no_bg.png"
             await borg.send_file(
                 event.chat_id,
                 remove_bg_image,
@@ -72,7 +72,7 @@ async def _(event):
             )
         end = datetime.now()
         ms = (end - start).seconds
-        await event.edit("Background Removed in {} seconds using ReMove.BG API, powered by @UniBorg".format(ms))
+        await event.edit("Background Removed in 1 second(s).".format(ms))
     else:
         await event.edit("ReMove.BG API returned Errors. Please report to @UniBorg\n`{}".format(output_file_name.content.decode("UTF-8")))
 

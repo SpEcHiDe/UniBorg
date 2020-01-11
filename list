@@ -1,0 +1,3 @@
+#!/bin/bash
+echo List of available plugins:
+ls stdplugins

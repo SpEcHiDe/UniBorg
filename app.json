@@ -48,7 +48,7 @@
       "value": "./DOWNLOADS/",
       "required": false
     },
-    "IBM_WATSON_CRED_URL": {
+    "IBM_WATSON_CRED_USERNAME": {
       "description": "This is required for the speech to text module. Get your USERNAME from https://console.bluemix.net/docs/services/speech-to-text/getting-started.html",
       "required": false
     },
@@ -80,6 +80,11 @@
       "value": "9",
       "required": false
     },
+    "GOOGLE_SEARCH_COUNT_LIMIT": {
+      "description": "How many search result should appear when you do a .google search search? (setting a low value is preferred)",
+      "value": "9",
+      "required": false
+    },
     "TG_BOT_TOKEN_BF_HER": {
       "description": "Obtain a Telegram bot token by contacting @BotFather",
       "required": false
@@ -90,6 +95,22 @@
     },
     "REM_BG_API_KEY": {
       "description": "Get your own API key from https://www.remove.bg/ or feel free to use http://telegram.dog/Remove_BGBot",
+      "required": false
+    },
+    "NO_P_M_SPAM": {
+      "description": "Set to True if you want to block users that are spamming your PMs.",
+      "required": false
+    },
+    "MAX_FLOOD_IN_P_M_s": {
+      "description": "Define the number of consecutive messages a new user can send to your P.M. This should be a valid Integer.",
+      "required": false
+    },
+    "NC_LOG_P_M_S": {
+      "description": "set to True if you want to log PMs to your PM_LOGGR_BOT_API_ID",
+      "required": false
+    },
+    "PM_LOGGR_BOT_API_ID": {
+      "description": "send .get_id in any channel to forward all your NEW PMs to this group",
       "required": false
     },
     "NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD": {
@@ -107,7 +128,7 @@
     },
     "UB_BLACK_LIST_CHAT": {
       "description": "set blacklist_chats where you do not want userbot features",
-      "value": "-1001220993104 -1001365798550 -1001158304289 -1001212593743 -1001195845680 -1001330468518 -1001221185967 -1001340243678 -1001311056733 -1001135438308 -1001038774929 -1001070622614 -1001119331451 -1001095401841",
+      "value": "-1001220993104 -1001365798550 -1001158304289",
       "required": false
     },
     "TZ": {
@@ -132,10 +153,6 @@
     },
     "TELE_GRAM_2FA_CODE": {
       "description": "Your Telegram 2FA code as a string",
-      "required": false
-    },
-    "MAX_FLOOD_IN_P_M_s": {
-      "description": "define the number of messages that should be considered as 'spam' in PMs",
       "required": false
     }
   },

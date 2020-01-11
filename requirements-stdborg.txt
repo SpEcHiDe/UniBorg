@@ -3,11 +3,11 @@ aiohttp
 aria2p
 beautifulsoup4
 cfscrape
-coffeehouse
 cryptg
 emoji
 googletrans
 google_images_download
+gsearch
 gtts
 hachoir
 Pillow
@@ -25,6 +25,10 @@ telegraph
 urbandict
 wikipedia
 youtube-dl
+git+https://github.com/ahupp/python-magic
 google-api-python-client
 oauth2client
 httplib2
+pyGithub
+coffeehouse
+pymongo

@@ -53,11 +53,15 @@ async def _(event):
         downloaded_file_name = os.path.join(to_download_directory, file_name)
         downloader = SmartDL(url, downloaded_file_name, progress_bar=False)
         downloader.start(blocking=False)
-        display_message = ""
         c_time = time.time()
         while not downloader.isFinished():
+            # url
+            # downloaded_file_name
+            # mone
+            # c_time
             total_length = downloader.filesize if downloader.filesize else None
             downloaded = downloader.get_dl_size()
+            display_message = ""
             now = time.time()
             diff = now - c_time
             percentage = downloader.get_progress() * 100
@@ -69,13 +73,8 @@ async def _(event):
                 round(percentage, 2))
             estimated_total_time = downloader.get_eta(human=True)
             try:
-                current_message = f"trying to download\n"
-                current_message += f"URL: {url}\n"
-                current_message += f"File Name: {file_name}\n"
-                current_message += f"{progress_str}\n"
-                current_message += f"{humanbytes(downloaded)} of {humanbytes(total_length)}\n"
-                current_message += f"ETA: {estimated_total_time}"
-                if round(diff % 10.00) == 0 and current_message != display_message:
+                current_message = f"trying to download\nURL: {url}\nFile Name: {file_name}\n{progress_str}\n{humanbytes(downloaded)} of {humanbytes(total_length)}\nETA: {estimated_total_time}"
+                if current_message != display_message:
                     await mone.edit(current_message)
                     display_message = current_message
             except Exception as e:

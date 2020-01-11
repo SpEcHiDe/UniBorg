@@ -8,7 +8,7 @@ import speedtest
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="speedtest ?(.*)"))
+@borg.on(admin_cmd("speedtest ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

@@ -3,8 +3,8 @@ Commands:
 .clearwelcome
 .savewelcome <Welcome Message>"""
 
-from telethon import events, utils
-from telethon.tl import types
+from telethon import events
+from telethon.utils import pack_bot_file_id
 from sql_helpers.welcome_sql import get_current_welcome_settings, \
     add_welcome_setting, rm_welcome_setting, update_previous_welcome
 from uniborg.util import admin_cmd
@@ -19,47 +19,41 @@ async def _(event):
         user_joined=True,
         user_left=False,
         user_kicked=False,"""
-        if event.user_joined or event.user_added:
+        if event.user_joined:
             if cws.should_clean_welcome:
                 try:
-                    await event.client.delete_messages(
+                    await borg.delete_messages(  # pylint:disable=E0602
                         event.chat_id,
                         cws.previous_welcome
                     )
                 except Exception as e:  # pylint:disable=C0103,W0703
                     logger.warn(str(e))  # pylint:disable=E0602
             a_user = await event.get_user()
-            msg_o = await event.client.get_messages(
-                entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
-                ids=int(cws.f_mesg_id)
-            )
-            current_saved_welcome_message = msg_o.message
+            current_saved_welcome_message = cws.custom_welcome_message
             mention = "[{}](tg://user?id={})".format(a_user.first_name, a_user.id)
-            file_media = msg_o.media
             current_message = await event.reply(
                 current_saved_welcome_message.format(mention=mention),
-                file=file_media
+                file=cws.media_file_id
             )
             update_previous_welcome(event.chat_id, current_message.id)
 
 
-@borg.on(admin_cmd(pattern="savewelcome"))  # pylint:disable=E0602
+@borg.on(admin_cmd("savewelcome"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
     msg = await event.get_reply_message()
-    if msg:
-        msg_o = await event.client.forward_messages(
-            entity=Config.PRIVATE_CHANNEL_BOT_API_ID,
-            messages=msg,
-            from_peer=event.chat_id,
-            silent=True
-        )
-        add_welcome_setting(event.chat_id, True, 0, msg_o.id)
+    if msg and msg.media:
+        bot_api_file_id = pack_bot_file_id(msg.media)
+        add_welcome_setting(event.chat_id, msg.message, True, 0, bot_api_file_id)
+        await event.edit("Welcome note saved. ")
+    else:
+        input_str = event.text.split(None, 1)
+        add_welcome_setting(event.chat_id, input_str[1], True, 0)
         await event.edit("Welcome note saved. ")
 
 
-@borg.on(admin_cmd(pattern="clearwelcome"))  # pylint:disable=E0602
+@borg.on(admin_cmd("clearwelcome"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -67,8 +61,5 @@ async def _(event):
     rm_welcome_setting(event.chat_id)
     await event.edit(
         "Welcome note cleared. " + \
-        "[This](https://t.me/c/{}/{}) was your previous welcome message.".format(
-            Config.PRIVATE_CHANNEL_BOT_API_ID[4:],
-            cws.f_mesg_id
-        )
+        "The previous welcome message was `{}`.".format(cws.custom_welcome_message)
     )

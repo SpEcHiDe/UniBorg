@@ -5,7 +5,7 @@ from telethon.tl import functions, types
 from uniborg import util
 
 
-@borg.on(util.admin_cmd(pattern="create (b|g|c) (.*)"))  # pylint:disable=E0602
+@borg.on(util.admin_cmd("create (b|g|c) (.*)"))  # pylint:disable=E0602
 async def _(event):
     if event.fwd_from:
         return
@@ -14,7 +14,7 @@ async def _(event):
     if type_of_group == "b":
         try:
             result = await borg(functions.messages.CreateChatRequest(  # pylint:disable=E0602
-                users=["@GoogleIMGBot"],
+                users=["@BorgHelpBot"],
                 # Not enough users (to create a chat, for example)
                 # Telegram, no longer allows creating a chat with ourselves
                 title=group_name
@@ -22,7 +22,7 @@ async def _(event):
             created_chat_id = result.chats[0].id
             await borg(functions.messages.DeleteChatUserRequest(
                 chat_id=created_chat_id,
-                user_id="@GoogleIMGBot"
+                user_id="@BorgHelpBot"
             ))
             result = await borg(functions.messages.ExportChatInviteRequest(
                 peer=created_chat_id,

@@ -1,0 +1,1 @@
+# redirect to print.py

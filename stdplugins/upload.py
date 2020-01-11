@@ -33,7 +33,7 @@ def get_lst_of_files(input_directory, output_lst):
     return output_lst
 
 
-@borg.on(admin_cmd(pattern="uploadir (.*)"))
+@borg.on(admin_cmd("uploadir (.*)"))
 async def _(event):
     if event.fwd_from:
         return
@@ -67,7 +67,7 @@ async def _(event):
                         width = metadata.get("width")
                     if metadata.has("height"):
                         height = metadata.get("height")
-                if single_file.endswith((".mp4", ".webm")):
+                if single_file.endswith((".mkv", ".mp4", ".webm")):
                     metadata = extractMetadata(createParser(single_file))
                     duration = 0
                     if metadata.has("duration"):

@@ -97,12 +97,20 @@ class Config(object):
     #
     LYDIA_API = os.environ.get("LYDIA_API", None)
     #
+    # Set to True if you want to block users that are spamming your PMs.
+    NO_P_M_SPAM = bool(os.environ.get("NO_P_M_SPAM", False))
     # define "spam" in PMs
     MAX_FLOOD_IN_P_M_s = int(os.environ.get("MAX_FLOOD_IN_P_M_s", 3))
     # leave this blank, should be automatically filled for Heroku.com users
     PM_LOGGR_BOT_API_ID = os.environ.get("PM_LOGGR_BOT_API_ID", None)
     if PM_LOGGR_BOT_API_ID:
         PM_LOGGR_BOT_API_ID = int(PM_LOGGR_BOT_API_ID)
+    # define "heroku_link" in conig_vars
+    HEROKU_LINK = os.environ.get("HEROKU_LINK", None)
+    # define "repo_link" in conig_vars
+    REPO_LINK = os.environ.get("REPO_LINK", None)
+    # define "repo_link" in conig_vars
+    PACKS_CONTENT = os.environ.get("PACKS_CONTENT", None)
 
 
 class Production(Config):

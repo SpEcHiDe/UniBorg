@@ -1,8 +1,8 @@
 """Lydia AI plugin for @UniBorg
 
-.enacf <as a reply to user's message //Turns AI on For that user.
-.delcf <as a reply to user's message //Turns AI off For that user.
-.lstcf // Outputs List Of Currently added Users in AI Auto-Chat.
+.enableai <as a reply to user's message //Turns AI on For that user.
+.disableai <as a reply to user's message //Turns AI off For that user.
+.listai // Outputs List Of Currently added Users in AI Auto-Chat.
 
 Description: A module that Act as a chatbot and chat with a User/other Bot.
 This Module Needs CoffeeHouse API to work. so Join https://telegram.dog/IntellivoidDev and send #activateapi and follow instructions.
@@ -28,7 +28,7 @@ if Config.LYDIA_API is not None:
     api_client = cf.API(api_key)
 
 
-@borg.on(admin_cmd(pattern="(ena|del|lst)cf", allow_sudo=True))
+@borg.on(admin_cmd(pattern="(enable|disable|list)ai", allow_sudo=True))
 async def lydia_disable_enable(event):
     if event.fwd_from:
         return
@@ -41,18 +41,18 @@ async def lydia_disable_enable(event):
         user_id = reply_msg.from_id
         chat_id = event.chat_id
         await event.edit("Processing...")
-        if input_str == "ena":
+        if input_str == "enable":
             session = api_client.create_session()
             logger.info(session)
             logger.info(add_s(user_id, chat_id, session.id, session.expires))
-            await event.edit(f"Lydia AI turned on for [user](tg://user?id={user_id}) in chat: `{chat_id}`")
-        elif input_str == "del":
+            await event.edit(f"sup bich")
+        elif input_str == "disable":
             logger.info(remove_s(user_id, chat_id))
-            await event.edit(f"Lydia AI turned off for [user](tg://user?id={user_id}) in chat: `{chat_id}`")
-        elif input_str == "lst":
+            await event.edit(f"nigga, am out...")
+        elif input_str == "list":
             lsts = get_all_s()
             if len(lsts) > 0:
-                output_str = "Lydia AI enabled users:\n\n"
+                output_str = "AI enabled users:\n\n"
                 for lydia_ai in lsts:
                     output_str += f"[user](tg://user?id={lydia_ai.user_id}) in chat `{lydia_ai.chat_id}`\n"
             else:
@@ -60,7 +60,7 @@ async def lydia_disable_enable(event):
             if len(output_str) > Config.MAX_MESSAGE_SIZE_LIMIT:
                 with io.BytesIO(str.encode(output_str)) as out_file:
                     out_file.name = "lydia_ai.text"
-                    await event.client.send_file(
+                    await borg.send_file(
                         event.chat_id,
                         out_file,
                         force_document=True,

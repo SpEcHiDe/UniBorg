@@ -8,7 +8,7 @@ from googletrans import Translator
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="tr ?(.*)"))
+@borg.on(admin_cmd("tr ?(.*)"))
 async def _(event):
     if event.fwd_from:
         return

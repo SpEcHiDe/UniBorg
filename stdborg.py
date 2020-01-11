@@ -28,6 +28,7 @@ else:
 
 if Config.DB_URI is None:
     logging.warning("No DB_URI Found!")
+    sys.exit(1)
 
 
 if len(Config.SUDO_USERS) >= 0:
@@ -39,8 +40,7 @@ if Config.HU_STRING_SESSION is not None:
     session_name = str(Config.HU_STRING_SESSION)
     borg = Uniborg(
         StringSession(session_name),
-        n_plugin_path="stdplugins/",
-        db_plugin_path="dbplugins/",
+        plugin_path="stdplugins/",
         api_config=Config,
         api_id=Config.APP_ID,
         api_hash=Config.API_HASH
@@ -51,8 +51,7 @@ elif len(sys.argv) == 2:
     session_name = str(sys.argv[1])
     borg = Uniborg(
         session_name,
-        n_plugin_path="stdplugins/",
-        db_plugin_path="dbplugins/",
+        plugin_path="stdplugins/",
         connection_retries=None,
         api_config=Config,
         api_id=Config.APP_ID,
