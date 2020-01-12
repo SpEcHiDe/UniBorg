@@ -1,8 +1,6 @@
-"""Make / Download Telegram Sticker Packs without installing Third Party applications
-Available Commands:
-.kang [Optional Emoji]
-.packinfo
-.getsticker"""
+# For UniBorg
+# By Priyam Kalra
+# Syntax (.kang <pack_number>)
 from telethon import events
 from telethon.tl import functions, types
 from io import BytesIO
@@ -29,6 +27,7 @@ from telethon.tl.types import (
 )
 from uniborg.util import admin_cmd
 
+# need to define these in the enviroment config for the sticker pack name to be displayed
 pack_name = Config.PACK_NAME
 anim_pack_name = Config.ANIM_PACK_NAME
 
@@ -70,7 +69,7 @@ async def _(event):
             sticker.seek(0)
             uploaded_sticker = await borg.upload_file(sticker, file_name=file_ext_ns_ion)
 
-    await event.edit("Processing this sticker. Please Wait!")
+    await event.edit("```Using Black Magic to kang this sticker...```")
 
     async with borg.conversation("@Stickers") as bot_conv:
         now = datetime.datetime.now()
@@ -122,7 +121,7 @@ async def _(event):
             await silently_send_message(bot_conv, sticker_emoji)
             await silently_send_message(bot_conv, "/done")
 
-    await event.edit(f"Sticker added to [{pack_name}](t.me/addstickers/{packshortname})!")
+    await event.edit(f"Sticker sucessfully kanged to [{pack_name} {args}](t.me/addstickers/{packshortname})!")
 
 
 @borg.on(admin_cmd("packinfo"))
