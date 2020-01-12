@@ -121,7 +121,7 @@ async def _(event):
             await silently_send_message(bot_conv, sticker_emoji)
             await silently_send_message(bot_conv, "/done")
 
-    await event.edit(f"Sticker sucessfully kanged to [{pack_name} {args}](t.me/addstickers/{packshortname})!")
+    await event.edit(f"Sticker successfully kanged to [{packname} {args}](t.me/addstickers/{packshortname})!")
 
 
 @borg.on(admin_cmd("packinfo"))
