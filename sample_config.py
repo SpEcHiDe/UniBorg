@@ -105,12 +105,14 @@ class Config(object):
     PM_LOGGR_BOT_API_ID = os.environ.get("PM_LOGGR_BOT_API_ID", None)
     if PM_LOGGR_BOT_API_ID:
         PM_LOGGR_BOT_API_ID = int(PM_LOGGR_BOT_API_ID)
-    # define "heroku_link" in conig_vars
+    # define "heroku_link" in config_vars
     HEROKU_LINK = os.environ.get("HEROKU_LINK", None)
-    # define "repo_link" in conig_vars
+    # define "repo_link" in config_vars
     REPO_LINK = os.environ.get("REPO_LINK", None)
-    # define "repo_link" in conig_vars
+    # define "packs_content" in config_vars
     PACKS_CONTENT = os.environ.get("PACKS_CONTENT", None)
+    # define "pack_name" in config_vars
+    PACK_NAME = os.environ.get("PACK_NAME", None)
 
 
 class Production(Config):
