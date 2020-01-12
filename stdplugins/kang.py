@@ -30,6 +30,7 @@ from telethon.tl.types import (
 from uniborg.util import admin_cmd
 
 pack_name = Config.PACK_NAME
+anim_pack_name = Config.ANIM_PACK_NAME
 
 @borg.on(admin_cmd(pattern="kang ?(.*)"))
 async def _(event):
@@ -57,7 +58,7 @@ async def _(event):
     if is_a_s:
         file_ext_ns_ion = "AnimatedSticker.tgs"
         uploaded_sticker = await borg.upload_file(file, file_name=file_ext_ns_ion)
-        packname = f"{pack_name} {args}"
+        packname = f"{anim_pack_name} {args}"
         # format: Uni_Borg_Packx_userid
         packshortname = f"Uni_Borg_Pack{args}_{userid}_as"
     elif not is_message_image(reply_message):
