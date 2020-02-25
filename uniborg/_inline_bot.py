@@ -110,7 +110,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
             buttons = paginate_help(
                 current_page_number + 1, borg._plugins, "helpme")
             # https://t.me/TelethonChat/115200
-            await event.client.edit_message(event.chat_id, ids=event.id, buttons=buttons)
+            await event.client.edit_message(event.chat_id, event.id, buttons=buttons)
         else:
             reply_pop_up_alert = "Please get your own @UniBorg, and don't edit my messages!"
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
