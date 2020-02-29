@@ -19,9 +19,9 @@ async def _(event):
         return
     DELAY_BETWEEN_EDITS = 0.3
     PROCESS_RUN_TIME = 100
-    match = re.match(r"{}exec ?(.*)(?:\n+\\\\ input\n([\s\S]*)\\\\)?".format(Config.COMMAND_HAND_LER), event.text)
+    match = re.match(r"{}exec ?(.*)(?:\n+\\\\ input\n([\s\S]*)\n\\\\)?".format(Config.COMMAND_HAND_LER), event.text)
     cmd = match.group(1)
-    input1 = match.group(2)[:1].encode()
+    input1 = match.group(2).encode()
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
