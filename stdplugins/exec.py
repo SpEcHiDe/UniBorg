@@ -21,7 +21,7 @@ async def _(event):
     PROCESS_RUN_TIME = 100
     match = re.match(r"{}exec ?(.*)(?:\n+\\\\ input\n([\s\S]*)\\\\)?".format(Config.COMMAND_HAND_LER), event.text)
     cmd = match.group(1)
-    input1 = match.group(2).encode()
+    input1 = match.group(2)[:1].encode()
     reply_to_id = event.message.id
     if event.reply_to_msg_id:
         reply_to_id = event.reply_to_msg_id
@@ -40,7 +40,7 @@ async def _(event):
     else:
         _o = o.split("\n")
         o = "\n".join([f"`{x}`" for x in _o])
-    OUTPUT = f"**QUERY:**\n__Command:__\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n**INPUT:**\n{input1}\n\n**stderr:** \n`{e}`\n**Output:**\n{o}\n\nProcess exited with exit code {await process.wait()}"
+    OUTPUT = f"**QUERY:**\n__Command:__\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n**INPUT:**\n{input1.decode()}\n\n**stderr:** \n`{e}`\n**Output:**\n{o}\n\nProcess exited with exit code {await process.wait()}"
     if len(OUTPUT) > Config.MAX_MESSAGE_SIZE_LIMIT:
         with io.BytesIO(str.encode(OUTPUT)) as out_file:
             out_file.name = "exec.text"
