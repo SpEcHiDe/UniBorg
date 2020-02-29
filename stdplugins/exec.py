@@ -12,7 +12,7 @@ import time
 from uniborg.util import admin_cmd
 
 
-@borg.on(admin_cmd(pattern="exec ?(.*?)(?:\n(?:\n\_?(.*?))+)$"))
+@borg.on(admin_cmd(pattern="exec ?(.*)(?:\n+\\\\ input\n([\s\S]*)\\\\)?$"))
 async def _(event):
     if event.fwd_from:
         return
