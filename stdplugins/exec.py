@@ -38,7 +38,7 @@ async def _(event):
     if not o:
         o = "**Tip**: \n`If you want to see the results of your code, I suggest printing them to stdout.`"
     else:
-        _o = o.split("\n")
+        _o = o.split("\n")[:-1]
         o = "\n".join([f"`{x}`" for x in _o])
     OUTPUT = f"**QUERY:**\n__Command:__\n`{cmd}`\n__PID:__\n`{process.pid}`\n\n" + (f"**INPUT:**\n`{input1}`\n\n" if input1 is not None else "") + f"**stderr:** \n`{e}`\n**Output:**\n{o}\n\nProcess exited with exit code {await process.wait()}"
     if len(OUTPUT) > Config.MAX_MESSAGE_SIZE_LIMIT:
