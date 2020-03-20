@@ -6,10 +6,12 @@ cfscrape
 coffeehouse
 cryptg
 emoji
+gitpython
 googletrans
 google_images_download
 gtts
 hachoir
+heroku3
 Pillow
 psycopg2
 pySmartDL
