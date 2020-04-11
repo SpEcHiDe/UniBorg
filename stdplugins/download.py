@@ -15,7 +15,7 @@ from telethon.tl.types import DocumentAttributeVideo
 from uniborg.util import admin_cmd, humanbytes, progress, time_formatter
 
 
-@borg.on(admin_cmd(pattern="download ?(.*)", allow_sudo=True))
+@borg.on(admin_cmd(pattern="dl ?(.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
