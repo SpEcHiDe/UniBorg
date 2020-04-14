@@ -11,6 +11,7 @@ google_images_download
 gtts
 hachoir
 Pillow
+PyLyrics
 psycopg2
 pySmartDL
 python-barcode
