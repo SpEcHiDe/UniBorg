@@ -25,7 +25,8 @@ async def _(event):
             await event.edit(f"Singing {song[0].strip()} from {song[1].strip()} 🎙")
             while i < len(lycirs):
                 await asyncio.sleep(2)
-                await event.edit(lycirs[i])
+                if not lycirs[i] == "":
+                    await event.edit("\n" + lycirs[i])
                 i += 1
     except ValueError:
         await event.edit("Song not found")
