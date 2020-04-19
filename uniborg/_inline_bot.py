@@ -104,7 +104,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
         data=re.compile(b"helpme_next\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
-        if event.query.user_id == borg.uid:  # pylint:disable=E0602
+        if event.sender_id == borg.uid:  # pylint:disable=E0602
             current_page_number = int(
                 event.data_match.group(1).decode("UTF-8"))
             buttons = paginate_help(
@@ -120,7 +120,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
         data=re.compile(b"helpme_prev\((.+?)\)")
     ))
     async def on_plug_in_callback_query_handler(event):
-        if event.query.user_id == borg.uid:  # pylint:disable=E0602
+        if event.sender_id == borg.uid:  # pylint:disable=E0602
             current_page_number = int(
                 event.data_match.group(1).decode("UTF-8"))
             buttons = paginate_help(
