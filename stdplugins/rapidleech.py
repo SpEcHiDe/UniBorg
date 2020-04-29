@@ -50,9 +50,6 @@ async def _(event):
 
 async def get_direct_ip_specific_link(link: str):
     # https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/openload.py#L246-L255
-    OPEN_LOAD_DOMAINS = r"(?:openload\.(?:co|io|link|pw)|oload\.(?:tv|biz|stream|site|xyz|win|download|cloud|cc|icu|fun|club|info|press|pw|life|live|space|services|website)|oladblock\.(?:services|xyz|me)|openloed\.co)"
-    OPEN_LOAD_VALID_URL = r"(?x)https?://(?P<host>(?:www\.)?%s)/(?:f|embed)/(?P<id>[a-zA-Z0-9-_]+)" % OPEN_LOAD_DOMAINS
-    # https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/openload.py#L246-L255
     # https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/googledrive.py#L16-L27
     GOOGLE_DRIVE_VALID_URLS = r"(?x)https?://(?:(?:docs|drive)\.google\.com/(?:(?:uc|open)\?.*?id=|file/d/)|video\.google\.com/get_player\?.*?docid=)(?P<id>[a-zA-Z0-9_-]{28,})"
     # https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/googledrive.py#L16-L27
@@ -79,44 +76,7 @@ async def get_direct_ip_specific_link(link: str):
             dl_url = {
                 "url": base_url + eval(dl_url)
             }
-    elif re.search(OPEN_LOAD_VALID_URL, link):
-        # https://stackoverflow.com/a/47726003/4723940
-        async with aiohttp.ClientSession() as session:
-            openload_id = re.search(OPEN_LOAD_VALID_URL, link).group("id")
-            step_one_url = "https://api.openload.co/1/file/dlticket?file={}&login={}&key={}".format(
-                openload_id, Config.OPEN_LOAD_LOGIN, Config.OPEN_LOAD_KEY)
-            http_response = await session.get(step_one_url)
-            http_response_text = await http_response.text()
-            http_response_json = json.loads(http_response_text)
-            logger.info(http_response_json)
-            if http_response_json["msg"] == "OK":
-                # wait till wait time
-                await asyncio.sleep(int(http_response_json["result"]["wait_time"]))
-                # TODO: check if captcha is required
-                step_two_url = "https://api.openload.co/1/file/dl?file={}&ticket={}".format(
-                    openload_id, http_response_json["result"]["ticket"])
-                http_response = await session.get(step_two_url)
-                http_response_text = await http_response.text()
-                http_response_json = json.loads(http_response_text)
-                logger.info(http_response_json)
-                if http_response_json["msg"] == "OK":
-                    dl_file_url = http_response_json["result"]["url"]
-                    dl_file_name = http_response_json["result"]["name"]
-                    dl_file_size = http_response_json["result"]["size"]
-                    dl_url = {
-                        "url": dl_file_url,
-                        "name": dl_file_name,
-                        "size": dl_file_size
-                    }
-                else:
-                    dl_url = {
-                        "err": http_response_text
-                    }
-            else:
-                dl_url = {
-                    "err": http_response_text
-                }
-        # https://stackoverflow.com/a/47726003/4723940
+    
     elif re.search(GOOGLE_DRIVE_VALID_URLS, link):
         file_id = re.search(GOOGLE_DRIVE_VALID_URLS, link).group("id")
         async with aiohttp.ClientSession(cookie_jar=aiohttp.CookieJar()) as session:
