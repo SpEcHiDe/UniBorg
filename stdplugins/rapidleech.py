@@ -54,30 +54,8 @@ async def get_direct_ip_specific_link(link: str):
     GOOGLE_DRIVE_VALID_URLS = r"(?x)https?://(?:(?:docs|drive)\.google\.com/(?:(?:uc|open)\?.*?id=|file/d/)|video\.google\.com/get_player\?.*?docid=)(?P<id>[a-zA-Z0-9_-]{28,})"
     # https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/googledrive.py#L16-L27
     dl_url = None
-    if "zippyshare.com" in link:
-        async with aiohttp.ClientSession() as session:
-            http_response = await session.get(link)
-            http_response_text = await http_response.text()
-            response_b_soup = BeautifulSoup(http_response_text, "html.parser")
-            scripts = response_b_soup.find_all(
-                "script", {"type": "text/javascript"})
-            # calculations
-            # check https://github.com/LameLemon/ziggy/blob/master/ziggy.py
-            for script in scripts:
-                if "getElementById('dlbutton')" in script.text:
-                    regex_search_exp = re.search(
-                        '= (?P<url>\".+\" \+ (?P<math>\(.+\)) .+);', script.text)
-                    url_raw = regex_search_exp.group("url")
-                    math = regex_search_exp.group("math")
-                    dl_url = url_raw.replace(math, '"' + str(eval(math)) + '"')
-                    break
-            #
-            base_url = re.search("http.+.com", link).group()
-            dl_url = {
-                "url": base_url + eval(dl_url)
-            }
     
-    elif re.search(GOOGLE_DRIVE_VALID_URLS, link):
+    if re.search(GOOGLE_DRIVE_VALID_URLS, link):
         file_id = re.search(GOOGLE_DRIVE_VALID_URLS, link).group("id")
         async with aiohttp.ClientSession(cookie_jar=aiohttp.CookieJar()) as session:
             step_zero_url = "https://drive.google.com/uc?export=download&id={}".format(file_id)
@@ -117,6 +95,6 @@ async def get_direct_ip_specific_link(link: str):
                     }
     else:
         dl_url = {
-            "err": "Unsupported URL"
+            "err": "Unsupported URL. Try @transload"
         }
     return dl_url
