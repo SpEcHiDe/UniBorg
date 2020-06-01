@@ -3,12 +3,14 @@ import html
 from telethon import events
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, is_admin
 import sql_helpers.warns_sql as sql
 
 
 @borg.on(admin_cmd(pattern="warn (.*)"))
 async def _(event):
+    if await is_admin(event.chat_id, event.from_id):
+        return
     if event.fwd_from:
         return
     warn_reason = event.pattern_match.group(1)
