@@ -227,7 +227,7 @@ async def _(event):
         logger.info("DB_URI is not configured.")
         logger.info(str(e))
         return False
-    if await is_admim(event.chat_id, event.action_message.from_id):
+    if await is_admin(event.chat_id, event.action_message.from_id):
         return
     if is_locked(event.chat_id, "bots"):
         # bots are limited Telegram accounts,
