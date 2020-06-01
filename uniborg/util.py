@@ -9,6 +9,7 @@ import time
 
 from telethon import events
 from telethon.tl.functions.messages import GetPeerDialogsRequest
+from telethon.tl.types import ChannelParticipantsAdmins
 
 # the secret configuration specific things
 ENV = bool(os.environ.get("ENV", False))
@@ -143,3 +144,10 @@ def time_formatter(milliseconds: int) -> str:
         ((str(seconds) + "s, ") if seconds else "") + \
         ((str(milliseconds) + "ms, ") if milliseconds else "")
     return tmp[:-2]
+
+
+async def is_admin(chat_id, user_id):
+    admins_lst = [admin.id for admin in (await borg.get_participants(chat_id, filter=ChannelParticipantsAdmins()))]
+    if user_id in admin_lst:
+        return True
+    return False
