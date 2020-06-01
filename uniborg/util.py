@@ -151,3 +151,15 @@ async def is_admin(chat_id, user_id):
     if user_id in admin_lst:
         return True
     return False
+
+
+# Not that Great but it will fix sudo reply
+async def edit_or_reply(client, user_id, text):
+    if user_id in Config.SUDO_USERS:
+      reply_to = await client.get_reply_message()
+      if reply_to:
+        return await reply_to.reply(text)
+      else:
+        return await client.reply(text)
+    else:
+        return await client.edit(text)
