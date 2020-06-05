@@ -67,7 +67,7 @@ async def _(event):
                     r_message,
                     Config.TMP_DOWNLOAD_DIRECTORY
                 )
-                m_list = None
+                m_list = ''
                 with open(downloaded_file_name, "rb") as fd:
                     m_list = fd.readlines()
                 for m in m_list:
