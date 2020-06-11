@@ -3,6 +3,7 @@ __pycache__
 
 *.session
 *.session-journal
+.idea/
 data/
 config.py
 sessions/

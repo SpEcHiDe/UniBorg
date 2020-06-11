@@ -5,7 +5,8 @@ Available Commands:
 Available Options: d, y, m, w, o, q, r """
 from telethon import events
 from datetime import datetime, timedelta
-from telethon.tl.types import UserStatusEmpty, UserStatusLastMonth, UserStatusLastWeek, UserStatusOffline, UserStatusOnline, UserStatusRecently, ChannelParticipantsKicked, ChatBannedRights
+from telethon.tl.types import UserStatusEmpty, UserStatusLastMonth, UserStatusLastWeek, UserStatusOffline, \
+    UserStatusOnline, UserStatusRecently, ChannelParticipantsKicked, ChatBannedRights
 from telethon.tl import functions, types
 from time import sleep
 import asyncio
@@ -21,31 +22,33 @@ async def _(event):
         logger.info("TODO: Not yet Implemented")
     else:
         if event.is_private:
+            await event.edit("Only works in Groups/Channels")
             return False
         await event.edit("Searching Participant Lists.")
-        p = 0
-        async for i in borg.iter_participants(event.chat_id, filter=ChannelParticipantsKicked, aggressive=True):
+        participants_count = 0
+        async for kicked_user in borg.iter_participants(event.chat_id, filter=ChannelParticipantsKicked, aggressive=True):
             rights = ChatBannedRights(
                 until_date=0,
                 view_messages=False
             )
             try:
-                await borg(functions.channels.EditBannedRequest(event.chat_id, i, rights))
+                await borg(functions.channels.EditBannedRequest(channel = event.chat_id, user_id = kicked_user, banned_rights = rights))
             except FloodWaitError as ex:
                 logger.warn("sleeping for {} seconds".format(ex.seconds))
                 sleep(ex.seconds)
             except Exception as ex:
                 await event.edit(str(ex))
             else:
-                p += 1
-        await event.edit("{}: {} unbanned".format(event.chat_id, p))
+                participants_count += 1
+        await event.edit("{}: {} participants unbanned".format(event.chat_id, participants_count))
 
 
-@borg.on(admin_cmd(pattern="ikuck ?(.*)"))
+@borg.on(admin_cmd(pattern="kick ?(.*)"))  # Is it ikuck or kick?
 async def _(event):
     if event.fwd_from:
         return
     if event.is_private:
+        await event.edit("Only works in Groups/Channels")
         return False
     input_str = event.pattern_match.group(1)
     if input_str:
@@ -53,157 +56,162 @@ async def _(event):
         if not (chat.admin_rights or chat.creator):
             await event.edit("`You aren't an admin here!`")
             return False
-    p = 0
-    b = 0
+    participants_count = 0
+    bots = 0
     c = 0
-    d = 0
+    deleted_accts = 0
     ee = []
     m = 0
-    n = 0
+    user_status_none = 0
     y = 0
     w = 0
     o = 0
-    q = 0
-    r = 0
+    users_online = 0
+    active_users = 0
     await event.edit("Searching Participant Lists.")
-    async for i in borg.iter_participants(event.chat_id):
-        p = p + 1
-        #
-        # Note that it's "reversed". You must set to ``True`` the permissions
-        # you want to REMOVE, and leave as ``None`` those you want to KEEP.
-        rights = ChatBannedRights(
-            until_date=None,
-            view_messages=True
-        )
-        if isinstance(i.status, UserStatusEmpty):
+    #
+    # Note that it's "reversed". You must set to ``True`` the permissions
+    # you want to REMOVE, and leave as ``None`` those you want to KEEP.
+    rights = ChatBannedRights(
+        until_date=None,
+        view_messages=True
+    )
+    async for user in borg.iter_participants(event.chat_id):
+        participants_count = participants_count + 1
+        
+        if isinstance(user.status, UserStatusEmpty):
             y = y + 1
             if "y" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
-                        await event.edit("I need admin priveleges to perform this action!")
+                        await event.edit("I need admin privileges to perform this action!")
+                        # TODO check admin privileges before iteratin'
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break  # FIXME If privileges checked before iteration, we could remove this break
                 else:
                     c = c + 1
-        if isinstance(i.status, UserStatusLastMonth):
+        elif isinstance(user.status, UserStatusLastMonth):
             m = m + 1
             if "m" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        if isinstance(i.status, UserStatusLastWeek):
+        elif isinstance(user.status, UserStatusLastWeek):
             w = w + 1
             if "w" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        if isinstance(i.status, UserStatusOffline):
+        elif isinstance(user.status, UserStatusOffline):
             o = o + 1
             if "o" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        if isinstance(i.status, UserStatusOnline):
-            q = q + 1
+        elif isinstance(user.status, UserStatusOnline):
+            users_online = users_online + 1
             if "q" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        if isinstance(i.status, UserStatusRecently):
-            r = r + 1
+        elif isinstance(user.status, UserStatusRecently):
+            active_users = active_users + 1
             if "r" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        if i.bot:
-            b = b + 1
+        if user.bot:
+            bots = bots + 1
             if "b" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        elif i.deleted:
-            d = d + 1
+        elif user.deleted:
+            deleted_accts = deleted_accts + 1
             if "d" in input_str:
-                status, e = await ban_user(event.chat_id, i, rights)
+                status, e = await ban_user(event.chat_id, user, rights)
                 if not status:
                     try:
                         await event.edit("I need admin priveleges to perform this action!")
                     except:
                         pass
                     ee.append(str(e))
-                    # break
+                    break
                 else:
                     c = c + 1
-        elif i.status is None:
-            n = n + 1
+        elif user.status is None:
+            user_status_none = user_status_none + 1
     if input_str:
-        required_string = """Kicked {} / {} users
-Deleted Accounts: {}
-UserStatusEmpty: {}
-UserStatusLastMonth: {}
-UserStatusLastWeek: {}
-UserStatusOffline: {}
-UserStatusOnline: {}
-UserStatusRecently: {}
-Bots: {}
-None: {}"""
-        await event.edit(required_string.format(c, p, d, y, m, w, o, q, r, b, n))
+        required_string = """
+        Kicked {} / {} users
+        Deleted Accounts: {}
+        UserStatusEmpty: {}
+        UserStatusLastMonth: {}
+        UserStatusLastWeek: {}
+        UserStatusOffline: {}
+        UserStatusOnline: {}
+        UserStatusRecently: {}
+        Bots: {}
+        None: {}"""
+        await event.edit(required_string.format(c, participants_count, deleted_accts, y, m, w, o, users_online, active_users, bots, user_status_none))
         await asyncio.sleep(5)
-    await event.edit("""Total: {} users
-Deleted Accounts: {}
-UserStatusEmpty: {}
-UserStatusLastMonth: {}
-UserStatusLastWeek: {}
-UserStatusOffline: {}
-UserStatusOnline: {}
-UserStatusRecently: {}
-Bots: {}
-None: {}""".format(p, d, y, m, w, o, q, r, b, n))
+    else:
+        await event.edit("""
+        Total: {} users
+        Deleted Accounts: {}
+        UserStatusEmpty: {}
+        UserStatusLastMonth: {}
+        UserStatusLastWeek: {}
+        UserStatusOffline: {}
+        UserStatusOnline: {}
+        UserStatusRecently: {}
+        Bots: {}
+        None: {}""".format(participants_count, deleted_accts, y, m, w, o, users_online, active_users, bots, user_status_none))
 
 
 async def ban_user(chat_id, i, rights):
