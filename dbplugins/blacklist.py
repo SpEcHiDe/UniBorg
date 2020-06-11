@@ -12,12 +12,13 @@ import re
 import sql_helpers.blacklist_sql as sql
 from telethon import events, utils
 from telethon.tl import types, functions
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, is_admin
 
 
 @borg.on(admin_cmd(incoming=True))
 async def on_new_message(event):
-    # TODO: exempt admins from locks
+    if await is_admin(event.client, event.chat_id, event.from_id):
+        return
     if borg.me.id == event.from_id:
         return
     name = event.raw_text

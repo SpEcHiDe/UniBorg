@@ -4,7 +4,7 @@ API Options: msg, media, sticker, gif, gamee, ainline, gpoll, adduser, cpin, cha
 DB Options: bots, commands, email, forward, url"""
 
 from telethon import events, functions, types
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, is_admin
 
 
 @borg.on(admin_cmd(pattern="lock( (?P<target>\S+)|$)"))
@@ -160,7 +160,8 @@ async def check_incoming_messages(event):
         logger.info("DB_URI is not configured.")
         logger.info(str(e))
         return False
-    # TODO: exempt admins from locks
+    if await is_admin(event.client, event.chat_id, event.from_id):
+        return
     peer_id = event.chat_id
     if is_locked(peer_id, "commands"):
         entities = event.message.entities
@@ -226,8 +227,8 @@ async def _(event):
         logger.info("DB_URI is not configured.")
         logger.info(str(e))
         return False
-    # TODO: exempt admins from locks
-    # check for "lock" "bots"
+    if await is_admin(event.client, event.chat_id, event.action_message.from_id):
+        return
     if is_locked(event.chat_id, "bots"):
         # bots are limited Telegram accounts,
         # and cannot join by themselves

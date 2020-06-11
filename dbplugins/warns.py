@@ -3,8 +3,33 @@ import html
 from telethon import events
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, is_admin
 import sql_helpers.warns_sql as sql
+
+
+banned_rights = ChatBannedRights(
+    until_date=None,
+    view_messages=True,
+    send_messages=True,
+    send_media=True,
+    send_stickers=True,
+    send_gifs=True,
+    send_games=True,
+    send_inline=True,
+    embed_links=True
+)
+
+unbanned_rights = ChatBannedRights(
+    until_date=None,
+    view_messages=None,
+    send_messages=None,
+    send_media=None,
+    send_stickers=None,
+    send_gifs=None,
+    send_games=None,
+    send_inline=None,
+    embed_links=None
+)
 
 
 @borg.on(admin_cmd(pattern="warn (.*)"))
@@ -13,15 +38,18 @@ async def _(event):
         return
     warn_reason = event.pattern_match.group(1)
     reply_message = await event.get_reply_message()
+    if await is_admin(event.client, event.chat_id, reply_message.from_id):
+        return
     limit, soft_warn = sql.get_warn_setting(event.chat_id)
     num_warns, reasons = sql.warn_user(reply_message.from_id, event.chat_id, warn_reason)
     if num_warns >= limit:
         sql.reset_warns(reply_message.from_id, event.chat_id)
         if soft_warn:
-            logger.info("TODO: kick user")
+            await borg(EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights))
             reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been kicked!".format(limit, reply_message.from_id)
+            await borg(EditBannedRequest(event.chat_id, reply_message.from_id, unbanned_rights))
         else:
-            logger.info("TODO: ban user")
+            await borg(EditBannedRequest(event.chat_id, reply_message.from_id, banned_rights))
             reply = "{} warnings, <u><a href='tg://user?id={}'>user</a></u> has been banned!".format(limit, reply_message.from_id)
     else:
         reply = "<u><a href='tg://user?id={}'>user</a></u> has {}/{} warnings... watch out!".format(reply_message.from_id, num_warns, limit)
@@ -58,5 +86,3 @@ async def _(event):
     reply_message = await event.get_reply_message()
     sql.reset_warns(reply_message.from_id, event.chat_id)
     await event.edit("Warnings have been reset!")
-
-

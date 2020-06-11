@@ -97,6 +97,8 @@ class Config(object):
     #
     LYDIA_API = os.environ.get("LYDIA_API", None)
     #
+    # JustWatch Country
+    WATCH_COUNTRY = os.environ.get("WATCH_COUNTRY","IN")
     # define "spam" in PMs
     MAX_FLOOD_IN_P_M_s = int(os.environ.get("MAX_FLOOD_IN_P_M_s", 3))
     # leave this blank, should be automatically filled for Heroku.com users
@@ -106,6 +108,8 @@ class Config(object):
     # define the "types" that should be uplaoded as streamable
     TL_VID_STREAM_TYPES = ("MP4", "WEBM")
     TL_MUS_STREAM_TYPES = ("MP3", "WAV", "FLAC")
+    # Deeer ARL Token
+    DEEZER_ARL_TOKEN = os.environ.get("DEEZER_ARL_TOKEN", None)
 
 
 class Production(Config):

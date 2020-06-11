@@ -27,11 +27,9 @@ async def on_snip(event):
         media_message = msg_o.media
         if isinstance(media_message, types.MessageMediaWebPage):
             media_message = None
-        await event.client.send_message(
-            event.chat_id,
-            msg_o.message,
-            reply_to=message_id,
-            file=media_message
+        await event.reply(
+            msg_o,
+            reply_to=message_id
         )
         await event.delete()
 

@@ -63,6 +63,9 @@ async def _(event):
     paths = response.download(arguments)
     logger.info(paths)
     lst = paths[0].get(input_str)
+    if len(lst) == 0:
+        await event.delete()
+        return
     await borg.send_file(
         event.chat_id,
         lst,

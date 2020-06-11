@@ -9,6 +9,8 @@ import time
 
 from telethon import events
 from telethon.tl.functions.messages import GetPeerDialogsRequest
+from telethon.tl.functions.channels import GetParticipantRequest
+from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantCreator
 
 # the secret configuration specific things
 ENV = bool(os.environ.get("ENV", False))
@@ -20,6 +22,8 @@ else:
 
 
 def admin_cmd(**args):
+    args["func"] = lambda e: e.via_bot_id is None
+    
     pattern = args.get("pattern", None)
     allow_sudo = args.get("allow_sudo", False)
 
@@ -91,8 +95,8 @@ async def progress(current, total, event, start, type_of_ps):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         progress_str = "[{0}{1}]\nPercent: {2}%\n".format(
-            ''.join(["█" for i in range(math.floor(percentage / 5))]),
-            ''.join(["░" for i in range(20 - math.floor(percentage / 5))]),
+            ''.join(["█" for _ in range(math.floor(percentage / 5))]),
+            ''.join(["░" for _ in range(20 - math.floor(percentage / 5))]),
             round(percentage, 2))
         tmp = progress_str + \
             "{0} of {1}\nETA: {2}".format(
@@ -141,3 +145,26 @@ def time_formatter(milliseconds: int) -> str:
         ((str(seconds) + "s, ") if seconds else "") + \
         ((str(milliseconds) + "ms, ") if milliseconds else "")
     return tmp[:-2]
+
+
+async def is_admin(client, chat_id, user_id):
+    req_jo = await client(GetParticipantRequest(
+        channel=chat_id,
+        user_id=user_id
+    ))
+    chat_participant = req_jo.participant
+    if isinstance(chat_participant, ChannelParticipantCreator) or isinstance(chat_participant, ChannelParticipantAdmin):
+        return True
+    return False
+
+
+# Not that Great but it will fix sudo reply
+async def edit_or_reply(event, user_id, text):
+    if user_id in Config.SUDO_USERS:
+      reply_to = await event.get_reply_message()
+      if reply_to:
+        return await reply_to.reply(text)
+      else:
+        return await event.reply(text)
+    else:
+        return await event.edit(text)

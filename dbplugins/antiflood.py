@@ -2,7 +2,7 @@ import asyncio
 from telethon import events
 from telethon.tl.functions.channels import EditBannedRequest
 from telethon.tl.types import ChatBannedRights
-from uniborg.util import admin_cmd
+from uniborg.util import admin_cmd, is_admin
 import sql_helpers.antiflood_sql as sql
 
 
@@ -20,9 +20,11 @@ async def _(event):
     # logger.info(CHAT_FLOOD)
     if not CHAT_FLOOD:
         return
+    admin_c = await is_admin(event.client, event.chat_id, event.message.from_id)
+    if admin_c:
+        return
     if not (str(event.chat_id) in CHAT_FLOOD):
         return
-    # TODO: exempt admins from this
     should_ban = sql.update_flood(event.chat_id, event.message.from_id)
     if not should_ban:
         return
