@@ -244,7 +244,7 @@ async def upload_google_photos(event):
                 part_size = len(current_chunk)
 
                 headers = {
-                    "Content-Length": str(len(part_size)),
+                    "Content-Length": str(part_size),
                     "X-Goog-Upload-Command": "upload",
                     "X-Goog-Upload-Offset": str(offset),
                     "Authorization": "Bearer " + creds.access_token,
