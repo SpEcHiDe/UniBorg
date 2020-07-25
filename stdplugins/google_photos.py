@@ -232,18 +232,21 @@ async def upload_google_photos(event):
             file_size / upload_granularity
         ))
         logger.info(number_of_req_s)
-
+        c_time = time.time()
+        loop = asyncio.get_event_loop()
         async with aiofiles.open(
             file_path,
             mode="rb"
         ) as f_d:
             for i in range(number_of_req_s):
                 current_chunk = await f_d.read(upload_granularity)
+                offset = i * upload_granularity
+                part_size = len(current_chunk)
 
                 headers = {
-                    "Content-Length": str(len(current_chunk)),
+                    "Content-Length": str(len(part_size)),
                     "X-Goog-Upload-Command": "upload",
-                    "X-Goog-Upload-Offset": str(i * upload_granularity),
+                    "X-Goog-Upload-Offset": str(offset),
                     "Authorization": "Bearer " + creds.access_token,
                 }
                 logger.info(i)
@@ -253,6 +256,7 @@ async def upload_google_photos(event):
                     headers=headers,
                     data=current_chunk
                 )
+                loop.create_task(progress(offset + part_size, file_size, event, c_time, "uploading(gphoto)🧐?"))
                 logger.info(response.headers)
 
                 # await f_d.seek(i * upload_granularity)
