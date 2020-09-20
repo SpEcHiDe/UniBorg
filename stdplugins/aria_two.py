@@ -223,7 +223,6 @@ async def check_progress_for_dl(gid, event):
                 return False
         except Exception as e:
             logger.info(str(e))
-            pass
     file = aria2.get_download(gid)
     complete = file.is_complete
     if complete:

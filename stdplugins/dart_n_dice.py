@@ -29,7 +29,7 @@ async def _(event):
     if input_str:
         try:
             required_number = int(input_str)
-            while not r.media.value == required_number:
+            while r.media.value != required_number:
                 await r.delete()
                 r = await reply_message.reply(file=InputMediaDice(emoticon=emoticon))
         except:

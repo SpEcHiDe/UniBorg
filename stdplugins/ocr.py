@@ -68,31 +68,33 @@ def progress(current, total):
 async def get_ocr_languages(event):
     if event.fwd_from:
         return
-    languages = {}
-    languages["English"] = "eng"
-    languages["Arabic"] = "ara"
-    languages["Bulgarian"] = "bul"
-    languages["Chinese (Simplified)"] = "chs"
-    languages["Chinese (Traditional)"] = "cht"
-    languages["Croatian"] = "hrv"
-    languages["Czech"] = "cze"
-    languages["Danish"] = "dan"
-    languages["Dutch"] = "dut"
-    languages["Finnish"] = "fin"
-    languages["French"] = "fre"
-    languages["German"] = "ger"
-    languages["Greek"] = "gre"
-    languages["Hungarian"] = "hun"
-    languages["Korean"] = "kor"
-    languages["Italian"] = "ita"
-    languages["Japanese"] = "jpn"
-    languages["Polish"] = "pol"
-    languages["Portuguese"] = "por"
-    languages["Russian"] = "rus"
-    languages["Slovenian"] = "slv"
-    languages["Spanish"] = "spa"
-    languages["Swedish"] = "swe"
-    languages["Turkish"] = "tur"
+    languages = {
+        "English": "eng",
+        "Arabic": "ara",
+        "Bulgarian": "bul",
+        "Chinese (Simplified)": "chs",
+        "Chinese (Traditional)": "cht",
+        "Croatian": "hrv",
+        "Czech": "cze",
+        "Danish": "dan",
+        "Dutch": "dut",
+        "Finnish": "fin",
+        "French": "fre",
+        "German": "ger",
+        "Greek": "gre",
+        "Hungarian": "hun",
+        "Korean": "kor",
+        "Italian": "ita",
+        "Japanese": "jpn",
+        "Polish": "pol",
+        "Portuguese": "por",
+        "Russian": "rus",
+        "Slovenian": "slv",
+        "Spanish": "spa",
+        "Swedish": "swe",
+        "Turkish": "tur",
+    }
+
     a = json.dumps(languages, sort_keys=True, indent=4)
     await event.edit(str(a))
 

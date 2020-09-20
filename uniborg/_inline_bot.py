@@ -24,14 +24,12 @@ async def _(event):
             bot_username,
             search_query
         )
-        i = 0
-        for result in bot_results:
+        for i, result in enumerate(bot_results):
             output_message += "{} {} `{}`\n\n".format(
                 result.title,
                 result.description,
                 ".icb " + bot_username + " " + str(i + 1) + " " + search_query
             )
-            i = i + 1
         await event.edit(output_message)
     except Exception as e:
         await event.edit("{} did not respond correctly, for **{}**!\n\
@@ -161,10 +159,7 @@ All instaructions to run @UniBorg in your PC has been explained in https://githu
 def paginate_help(page_number, loaded_plugins, prefix):
     number_of_rows = Config.NO_OF_BUTTONS_DISPLAYED_IN_H_ME_CMD
     number_of_cols = 2
-    helpable_plugins = []
-    for p in loaded_plugins:
-        if not p.startswith("_"):
-            helpable_plugins.append(p)
+    helpable_plugins = [p for p in loaded_plugins if not p.startswith("_")]
     helpable_plugins = sorted(helpable_plugins)
     modules = [custom.Button.inline(
         "{} {}".format("✅", x),

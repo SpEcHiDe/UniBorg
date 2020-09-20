@@ -178,15 +178,14 @@ async def check_incoming_messages(event):
                     "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
                 )
                 update_lock(peer_id, "commands", False)
-    if is_locked(peer_id, "forward"):
-        if event.fwd_from:
-            try:
-                await event.delete()
-            except Exception as e:
-                await event.reply(
-                    "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
-                )
-                update_lock(peer_id, "forward", False)
+    if is_locked(peer_id, "forward") and event.fwd_from:
+        try:
+            await event.delete()
+        except Exception as e:
+            await event.reply(
+                "I don't seem to have ADMIN permission here. \n`{}`".format(str(e))
+            )
+            update_lock(peer_id, "forward", False)
     if is_locked(peer_id, "email"):
         entities = event.message.entities
         is_email = False

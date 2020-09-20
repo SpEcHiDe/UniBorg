@@ -129,7 +129,7 @@ async def _(event):
                     # some media were having some issues
                     continue
                 os.remove(single_file)
-                u = u + 1
+                u += 1
                 # await event.edit("Uploaded {} / {} files.".format(u, len(lst_of_files)))
                 # @ControllerBot was having issues,
                 # if both edited_updates and update events come simultaneously.

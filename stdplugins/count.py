@@ -103,5 +103,4 @@ def inline_mention(user):
 def user_full_name(user):
     names = [user.first_name, user.last_name]
     names = [i for i in list(names) if i]
-    full_name = ' '.join(names)
-    return full_name
+    return ' '.join(names)

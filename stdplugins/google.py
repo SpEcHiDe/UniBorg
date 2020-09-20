@@ -78,7 +78,7 @@ async def _(event):
                 f_d.write(await image_req_set.read())
             url_lst.append(image_save_path)
             cap_lst.append(caption)
-    if len(url_lst) == 0:
+    if not url_lst:
         await event.edit(f"no results found for {input_str}")
         return
     if len(url_lst) != len(cap_lst):
@@ -107,7 +107,6 @@ async def _(event):
     if event.fwd_from:
         return
     start = datetime.now()
-    BASE_URL = "http://www.google.com"
     OUTPUT_STR = "Reply to an image to do Google Reverse Search"
     if not event.reply_to_msg_id:
         await event.edit("reply to any media, please -_-")
@@ -116,6 +115,7 @@ async def _(event):
     previous_message = await event.get_reply_message()
     previous_message_text = previous_message.message
     async with aiohttp.ClientSession() as requests:
+        BASE_URL = "http://www.google.com"
         if previous_message.media:
             downloaded_file_name = await previous_message.download_media(
                 Config.TMP_DOWNLOAD_DIRECTORY

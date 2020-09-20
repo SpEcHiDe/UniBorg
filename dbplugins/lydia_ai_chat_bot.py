@@ -92,11 +92,7 @@ async def on_new_message(event):
     if Config.LYDIA_API is None:
         return
     reply = await event.get_reply_message()
-    if reply is None:
-        pass
-    elif reply.from_id == borg.uid:
-        pass
-    else:
+    if reply is not None and reply.from_id != borg.uid:
         return
     if not event.media:
         user_id = event.from_id

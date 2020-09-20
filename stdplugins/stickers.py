@@ -273,10 +273,7 @@ def is_it_animated_sticker(message):
     try:
         if message.media and message.media.document:
             mime_type = message.media.document.mime_type
-            if "tgsticker" in mime_type:
-                return True
-            else:
-                return False
+            return "tgsticker" in mime_type
         else:
             return False
     except:
@@ -287,10 +284,11 @@ def is_message_image(message):
     if message.media:
         if isinstance(message.media, MessageMediaPhoto):
             return True
-        if message.media.document:
-            if message.media.document.mime_type.split("/")[0] == "image":
-                return True
-        return False
+        return bool(
+            message.media.document
+            and message.media.document.mime_type.split("/")[0] == "image"
+        )
+
     return False
 
 
@@ -319,11 +317,10 @@ def resize_image(image, save_locaton):
         https://github.com/skittles9823/SkittBot/blob/master/tg_bot/modules/stickers.py
     """
     im = Image.open(image)
-    maxsize = (512, 512)
     if (im.width and im.height) < 512:
         size1 = im.width
         size2 = im.height
-        if im.width > im.height:
+        if size1 > size2:
             scale = 512 / size1
             size1new = 512
             size2new = size2 * scale
@@ -336,6 +333,7 @@ def resize_image(image, save_locaton):
         sizenew = (size1new, size2new)
         im = im.resize(sizenew)
     else:
+        maxsize = (512, 512)
         im.thumbnail(maxsize)
     im.save(save_locaton, "PNG")
 

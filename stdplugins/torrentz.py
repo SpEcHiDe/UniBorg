@@ -33,7 +33,7 @@ async def _(event):
             result["seeds"] + " PEERS: " + result["peers"] + " \r\n"
         message_text += "===\r\n"
         output_str += message_text
-        i = i + 1
+        i += 1
     end = datetime.now()
     ms = (end - start).seconds
     await event.edit(

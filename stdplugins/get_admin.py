@@ -20,9 +20,7 @@ async def _(event):
     input_str = event.pattern_match.group(2)
     to_write_chat = await event.get_input_chat()
     chat = None
-    if not input_str:
-        chat = to_write_chat
-    else:
+    if input_str:
         mentions_heading = "Admins in {} channel: \n".format(input_str)
         mentions = mentions_heading
         try:
@@ -30,18 +28,21 @@ async def _(event):
         except Exception as e:
             await event.edit(str(e))
             return None
+    else:
+        chat = to_write_chat
     try:
         async for x in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
-            if not x.deleted:
-                if isinstance(x.participant, ChannelParticipantCreator):
-                    mentions += "\n 👑 [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
+            if not x.deleted and isinstance(
+                x.participant, ChannelParticipantCreator
+            ):
+                mentions += "\n 👑 [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
         mentions += "\n"
         async for x in borg.iter_participants(chat, filter=ChannelParticipantsAdmins):
-            if not x.deleted:
+            if x.deleted:
+                mentions += "\n `{}`".format(x.id)
+            else:
                 if isinstance(x.participant, ChannelParticipantAdmin):
                     mentions += "\n ⚜️ [{}](tg://user?id={}) `{}`".format(x.first_name, x.id, x.id)
-            else:
-                mentions += "\n `{}`".format(x.id)
     except Exception as e:
         mentions += " " + str(e) + "\n"
     if should_mention_admins:

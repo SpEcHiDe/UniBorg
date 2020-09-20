@@ -4,6 +4,8 @@
 import os
 
 
+
+
 class Config:
     LOGGER = True
     # Get this value from my.telegram.org! Please do not steal
@@ -62,10 +64,10 @@ class Config:
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
     # set blacklist_chats where you do not want userbot's features
-    UB_BLACK_LIST_CHAT = set(int(x) for x in os.environ.get(
-        "UB_BLACK_LIST_CHAT",
-        ""
-    ).split())
+    UB_BLACK_LIST_CHAT = {int(x) for x in os.environ.get(
+            "UB_BLACK_LIST_CHAT",
+            ""
+        ).split()}
     # specify LOAD and NO_LOAD
     LOAD = []
     # foloowing plugins won't work on Heroku,
@@ -92,9 +94,7 @@ class Config:
     # specify list of users allowed to use bot
     # WARNING: be careful who you grant access to your bot.
     # malicious users could do ".exec rm -rf /*"
-    SUDO_USERS = list(set(
-        int(x) for x in os.environ.get("SUDO_USERS", "").split()
-    ))
+    SUDO_USERS = list({int(x) for x in os.environ.get("SUDO_USERS", "").split()})
     # Google Drive ()
     G_DRIVE_CLIENT_ID = os.environ.get("G_DRIVE_CLIENT_ID", None)
     G_DRIVE_CLIENT_SECRET = os.environ.get("G_DRIVE_CLIENT_SECRET", None)
@@ -146,6 +146,7 @@ class Config:
         "LT_QOAN_NOE_FF_MPEG_URL",
         None
     )
+
 
 
 class Production(Config):

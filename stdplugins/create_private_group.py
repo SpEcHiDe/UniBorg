@@ -30,13 +30,16 @@ async def _(event):
             await event.edit("Group `{}` created successfully. Join {}".format(group_name, result.link))
         except Exception as e:  # pylint:disable=C0103,W0703
             await event.edit(str(e))
-    elif type_of_group == "g" or type_of_group == "c":
+    elif type_of_group in ["g", "c"]:
         try:
-            r = await borg(functions.channels.CreateChannelRequest(  # pylint:disable=E0602
-                title=group_name,
-                about="This is a Test from @UniBorg",
-                megagroup=False if type_of_group == "c" else True
-            ))
+            r = await borg(
+                functions.channels.CreateChannelRequest(
+                    title=group_name,
+                    about="This is a Test from @UniBorg",
+                    megagroup=type_of_group != "c",
+                )
+            )
+
             created_chat_id = r.chats[0].id
             result = await borg(functions.messages.ExportChatInviteRequest(
                 peer=created_chat_id,

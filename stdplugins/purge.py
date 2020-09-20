@@ -21,7 +21,7 @@ async def _(event):
             min_id=event.reply_to_msg_id,
             from_user=from_user
         ):
-            i = i + 1
+            i += 1
             msgs.append(message)
             if len(msgs) == 100:
                 await borg.delete_messages(event.chat_id, msgs, revoke=True)

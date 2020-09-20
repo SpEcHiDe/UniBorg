@@ -69,7 +69,7 @@ async def _(event):
             else:
                 final_output = link_preview + output_str
                 await event.reply(final_output, link_preview=True)
-            cus = cus + 1
+            cus += 1
         else:
             await event.edit("xkcd {} not found".format(xkcd_id))
     await event.edit(f"sent {cus} / {len(xkcd_id_s)} XKCD images")

@@ -98,14 +98,13 @@ async def get_full_user(event):
                     previous_message.forward.from_id or previous_message.forward.channel_id
                 )
             )
-            return replied_user, None
         else:
             replied_user = await event.client(
                 GetFullUserRequest(
                     previous_message.from_id
                 )
             )
-            return replied_user, None
+        return replied_user, None
     else:
         input_str = None
         try:

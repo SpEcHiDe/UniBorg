@@ -85,7 +85,7 @@ async def _(event):
             end = datetime.now()
             ms = (end - start).seconds
             required_file_name = input_str
-            await mone.edit("Found `{}` in {} seconds.".format(input_str, ms))
+            await mone.edit("Found `{}` in {} seconds.".format(required_file_name, ms))
         else:
             await mone.edit("File Not found in local server. Give me a file path :((")
             return False
@@ -315,7 +315,6 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
                     display_message = current_message
                 except Exception as e:
                     logger.info(str(e))
-                    pass
     file_id = response.get("id")
     try:
         # Insert new permissions
@@ -324,8 +323,7 @@ async def upload_file(http, file_path, file_name, mime_type, event, parent_id):
         pass
     # Define file instance and get url for download
     file = drive_service.files().get(fileId=file_id, supportsTeamDrives=True).execute()
-    download_url = file.get("webContentLink")
-    return download_url
+    return file.get("webContentLink")
 
 
 async def create_directory(http, directory_name, parent_id):
@@ -383,8 +381,7 @@ async def gdrive_list_file_md(service, file_id):
     try:
         file = service.files().get(fileId=file_id, supportsTeamDrives=True).execute()
         # logger.info(file)
-        file_meta_data = {}
-        file_meta_data["title"] = file["title"]
+        file_meta_data = {"title": file["title"]}
         mimeType = file["mimeType"]
         file_meta_data["createdDate"] = file["createdDate"]
         if mimeType == G_DRIVE_DIR_MIME_TYPE:
@@ -426,10 +423,9 @@ async def gdrive_search(http, search_query):
                 file_id = file.get("id")
                 if file.get("mimeType") == G_DRIVE_DIR_MIME_TYPE:
                     msg += f"🗃️ <a href='https://drive.google.com/drive/folders/{file_id}'>{file_title}</a>"
-                    msg += f" <code>{file_id}</code>\n"
                 else:
                     msg += f"👉 <a href='https://drive.google.com/uc?id={file_id}&export=download'>{file_title}</a>"
-                    msg += f" <code>{file_id}</code>\n"
+                msg += f" <code>{file_id}</code>\n"
             page_token = response.get("nextPageToken", None)
             if page_token is None:
                 break
