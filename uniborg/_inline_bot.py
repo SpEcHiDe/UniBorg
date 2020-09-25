@@ -94,7 +94,7 @@ if Config.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
                 text=(
                     "Try @UniBorg\n"
                     "You can log-in as Bot or User and do many cool things with your Telegram account.\n\n"
-                    "All instaructions to run @UniBorg in your PC has been explained in https://github.com/SpEcHiDe/UniBorg"
+                    "All instructions to run @UniBorg in your PC has been explained in https://github.com/SpEcHiDe/UniBorg"
                 ),
                 buttons=[
                     [custom.Button.url("Join the Channel", "https://telegram.dog/UniBorg"), custom.Button.url(
