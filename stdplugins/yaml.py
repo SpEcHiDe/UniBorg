@@ -3,7 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 # Theid file is stolen from https://github.com/udf/uniborg/blob/kate/stdplugins/info.py
 """Get Detailed info about any message
-Syntax: .json"""
+Syntax: .yaml"""
 from telethon import events
 import io
 from uniborg.util import admin_cmd, parse_pre, yaml_format
