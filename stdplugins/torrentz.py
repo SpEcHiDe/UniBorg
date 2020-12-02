@@ -109,7 +109,7 @@ def search_torrentz_eu(search_query):
     return r
 
 
-@borg.on(slitu.admin_cmd(pattern="piracy (TR|TMV|TB|TGY) (.*)"))
+@borg.on(slitu.admin_cmd(pattern="piracy (TR|TMV|TB|TGY) (.*)", allow_sudo=True))
 async def _(event):
     if event.fwd_from:
         return
